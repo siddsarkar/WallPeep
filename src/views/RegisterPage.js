@@ -7,20 +7,14 @@
  */
 
 import React from 'react'
-import {SafeAreaView, StatusBar, Text, useColorScheme} from 'react-native'
-import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {Text} from 'react-native'
+import Layout from '../components/common/Layout'
 
 export default function RegisterPage() {
-  const isDarkMode = useColorScheme() === 'dark'
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
-  }
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Text>Login</Text>
-    </SafeAreaView>
-  )
+    const {colors} = useTheme()
+    return (
+        <Layout>
+            <Text style={{color: colors.text}}>Register</Text>
+        </Layout>
+    )
 }
