@@ -6,30 +6,30 @@
  * @flow strict-local
  */
 
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  View,
-} from 'react-native';
+  View
+} from 'react-native'
 import {
   DebugInstructions,
   Header,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Section from '../components/common/Section';
+  ReloadInstructions
+} from 'react-native/Libraries/NewAppScreen'
+import Section from '../components/common/Section'
 
 const LandingPage = () => {
-  const {dark, colors} = useTheme();
+  const {dark, colors} = useTheme()
 
   const backgroundStyle = {
     backgroundColor: colors.background,
-    color: colors.text,
-  };
+    color: colors.text
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -58,13 +58,13 @@ const LandingPage = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage
 
 const styles = StyleSheet.create({
   highlight: {
-    fontWeight: '700',
-  },
-});
+    fontWeight: '700'
+  }
+})

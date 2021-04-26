@@ -1,27 +1,27 @@
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Avatar from '../ui/Avatar';
-import Icon from '../ui/Icon';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
+import {Image, StyleSheet, Text, View} from 'react-native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Avatar from '../ui/Avatar'
+import Icon from '../ui/Icon'
 
 const Card = ({image}) => {
-  const {colors} = useTheme();
+  const {colors} = useTheme()
   return (
     <View
       style={[
         s.root,
         {
           backgroundColor: colors.cardheader,
-          color: colors.text,
-        },
+          color: colors.text
+        }
       ]}>
       <View
         style={[
           s.header,
           {
-            backgroundColor: colors.cardheader,
-          },
+            backgroundColor: colors.cardheader
+          }
         ]}>
         <View style={s.iconContainer}>
           <Avatar image={image.user.profile_image.medium} />
@@ -31,8 +31,8 @@ const Card = ({image}) => {
             style={[
               s.textPrimary,
               {
-                color: colors.text,
-              },
+                color: colors.text
+              }
             ]}>
             {image.user.name}
           </Text>
@@ -80,40 +80,40 @@ const Card = ({image}) => {
         </View> */}
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card
 
 const s = StyleSheet.create({
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   root: {
-    width: '100%',
+    width: '100%'
   },
   header: {
     flexDirection: 'row',
-    padding: 8,
+    padding: 8
   },
   textContainer: {
     paddingHorizontal: 8,
-    flexGrow: 1,
+    flexGrow: 1
   },
   textPrimary: {
     fontSize: 18,
-    fontFamily: 'JosefinSans-Regular',
+    fontFamily: 'JosefinSans-Regular'
   },
   textSeecondary: {
-    color: 'gray',
+    color: 'gray'
   },
   iconContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   image: {
     height: 400,
-    width: 400,
+    width: 400
   },
   downloadBtn: {
     flexDirection: 'row',
@@ -122,16 +122,16 @@ const s = StyleSheet.create({
     borderColor: 'gray',
     paddingVertical: 2,
     paddingHorizontal: 4,
-    borderRadius: 2,
+    borderRadius: 2
   },
   downloadText: {
     fontSize: 18,
-    fontFamily: 'JosefinSans-Regular',
+    fontFamily: 'JosefinSans-Regular'
   },
   iconGroup: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon: {
-    paddingRight: 6,
-  },
-});
+    paddingRight: 6
+  }
+})

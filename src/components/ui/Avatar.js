@@ -1,9 +1,9 @@
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
+import {Image, StyleSheet, Text, View} from 'react-native'
 
 export default ({image}) => {
-  const {colors} = useTheme();
+  const {colors} = useTheme()
 
   return (
     <View style={s.root}>
@@ -13,8 +13,8 @@ export default ({image}) => {
         <Text style={[s.text, {color: colors.text}]}>JD</Text>
       )}
     </View>
-  );
-};
+  )
+}
 
 const s = StyleSheet.create({
   root: {
@@ -24,10 +24,10 @@ const s = StyleSheet.create({
     backgroundColor: 'gray',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   text: {
     textTransform: 'uppercase',
-    fontWeight: '900',
-  },
-});
+    fontWeight: '900'
+  }
+})

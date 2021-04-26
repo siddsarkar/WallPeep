@@ -1,11 +1,11 @@
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {StyleSheet, Text, useColorScheme, View} from 'react-native';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
+import {StyleSheet, Text, useColorScheme, View} from 'react-native'
 
 const Section = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'dark'
 
-  const {colors} = useTheme();
+  const {colors} = useTheme()
 
   return (
     <View style={styles.sectionContainer}>
@@ -13,8 +13,8 @@ const Section = ({children, title}) => {
         style={[
           styles.sectionTitle,
           {
-            color: colors.text,
-          },
+            color: colors.text
+          }
         ]}>
         {title}
       </Text>
@@ -22,29 +22,29 @@ const Section = ({children, title}) => {
         style={[
           styles.sectionDescription,
           {
-            color: colors.text,
-          },
+            color: colors.text
+          }
         ]}>
         {children}
       </Text>
     </View>
-  );
-};
+  )
+}
 
-export default Section;
+export default Section
 
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
-    paddingHorizontal: 24,
+    paddingHorizontal: 24
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: '600'
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
-  },
-});
+    fontWeight: '400'
+  }
+})

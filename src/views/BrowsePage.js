@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import {useTheme} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {useTheme} from '@react-navigation/native'
+import React, {useCallback, useEffect, useState} from 'react'
 import {
   ActivityIndicator,
   RefreshControl,
@@ -16,43 +16,43 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  View,
-} from 'react-native';
-import fetchPhotos from '../api/fetchEndpoint';
-import Card from '../components/common/Card';
+  View
+} from 'react-native'
+import fetchPhotos from '../api/fetchEndpoint'
+import Card from '../components/common/Card'
 
 export default function BrowsePage({ref}) {
-  const [mounted, setMounted] = useState(false);
-  const {colors, dark} = useTheme();
-  const [json, setJson] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false)
+  const {colors, dark} = useTheme()
+  const [json, setJson] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = useCallback(() => {
-    setRefreshing(true);
+    setRefreshing(true)
     fetchPhotos().then(res => {
-      setJson(res);
-      setRefreshing(false);
-    });
-  }, []);
+      setJson(res)
+      setRefreshing(false)
+    })
+  }, [])
 
   useEffect(() => {
-    setMounted(true);
+    setMounted(true)
     mounted &&
       fetchPhotos().then(res => {
-        setJson(res);
-        setIsLoading(false);
-      });
+        setJson(res)
+        setIsLoading(false)
+      })
 
     return () => {
-      setMounted(false);
-    };
-  }, [mounted]);
+      setMounted(false)
+    }
+  }, [mounted])
 
   const backgroundStyle = {
-    backgroundColor: colors.background,
-  };
+    backgroundColor: colors.background
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -68,8 +68,8 @@ export default function BrowsePage({ref}) {
             style={[
               s.text,
               {
-                color: colors.text,
-              },
+                color: colors.text
+              }
             ]}>
             Loading...
           </Text>
@@ -88,23 +88,23 @@ export default function BrowsePage({ref}) {
         </ScrollView>
       )}
     </SafeAreaView>
-  );
+  )
 }
 
 const s = StyleSheet.create({
   loader: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
+    height: '100%'
   },
   root: {
-    alignItems: 'center',
+    alignItems: 'center'
   },
   text: {
     marginTop: 10,
-    fontFamily: 'JosefinSans-Regular',
+    fontFamily: 'JosefinSans-Regular'
   },
   cardContainer: {
-    marginBottom: 30,
-  },
-});
+    marginBottom: 30
+  }
+})

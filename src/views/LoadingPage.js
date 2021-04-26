@@ -6,29 +6,29 @@
  * @flow strict-local
  */
 
-import {useTheme} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import {useTheme} from '@react-navigation/native'
+import React, {useEffect} from 'react'
 import {
   ActivityIndicator,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
-  View,
-} from 'react-native';
-import {useDarkMode} from '../theme/ThemeContext';
+  View
+} from 'react-native'
+import {useDarkMode} from '../theme/ThemeContext'
 
 export default function LoadingPage() {
-  const {dark} = useDarkMode();
-  const {colors} = useTheme();
+  const {dark} = useDarkMode()
+  const {colors} = useTheme()
 
   useEffect(() => {
-    console.log('Loading', dark);
-  }, [dark]);
+    console.log('Loading', dark)
+  }, [dark])
 
   const backgroundStyle = {
-    backgroundColor: colors.background,
-  };
+    backgroundColor: colors.background
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -43,25 +43,25 @@ export default function LoadingPage() {
           style={[
             s.text,
             {
-              color: colors.text,
-            },
+              color: colors.text
+            }
           ]}>
           {dark ? 'true' : 'false'}...
         </Text>
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const s = StyleSheet.create({
   loader: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
+    height: '100%'
   },
 
   text: {
     marginTop: 10,
-    fontFamily: 'JosefinSans-Regular',
-  },
-});
+    fontFamily: 'JosefinSans-Regular'
+  }
+})

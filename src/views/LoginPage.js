@@ -6,22 +6,22 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React from 'react'
 import {
   ActivityIndicator,
   SafeAreaView,
   StatusBar,
   Text,
-  useColorScheme,
-} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+  useColorScheme
+} from 'react-native'
+import {Colors} from 'react-native/Libraries/NewAppScreen'
 
 export default function LoginPage() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -29,5 +29,5 @@ export default function LoginPage() {
       <Text>Loading...</Text>
       <ActivityIndicator />
     </SafeAreaView>
-  );
+  )
 }

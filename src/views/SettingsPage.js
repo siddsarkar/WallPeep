@@ -1,5 +1,5 @@
-import {useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
+import {useTheme} from '@react-navigation/native'
+import React, {useState} from 'react'
 import {
   SafeAreaView,
   ScrollView,
@@ -7,24 +7,24 @@ import {
   StyleSheet,
   Switch,
   Text,
-  View,
-} from 'react-native';
-import {useDarkMode} from '../theme/ThemeContext';
+  View
+} from 'react-native'
+import {useDarkMode} from '../theme/ThemeContext'
 
 export default function SettingsPage() {
-  const {dark, toggleDark} = useDarkMode();
-  const {colors} = useTheme();
+  const {dark, toggleDark} = useDarkMode()
+  const {colors} = useTheme()
 
-  const [isEnabled, setIsEnabled] = useState(dark);
+  const [isEnabled, setIsEnabled] = useState(dark)
 
   const toggleSwitch = () => {
-    setIsEnabled(!isEnabled);
-    toggleDark(!dark);
-  };
+    setIsEnabled(!isEnabled)
+    toggleDark(!dark)
+  }
 
   const backgroundStyle = {
-    backgroundColor: colors.background,
-  };
+    backgroundColor: colors.background
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -38,15 +38,15 @@ export default function SettingsPage() {
           style={[
             s.groupContainer,
             {
-              backgroundColor: colors.card,
-            },
+              backgroundColor: colors.card
+            }
           ]}>
           <Text
             style={[
               s.groupTitle,
               {
-                color: colors.primary,
-              },
+                color: colors.primary
+              }
             ]}>
             Interface
           </Text>
@@ -56,8 +56,8 @@ export default function SettingsPage() {
                 style={[
                   s.textPrimary,
                   {
-                    color: colors.text,
-                  },
+                    color: colors.text
+                  }
                 ]}>
                 Dark Theme
               </Text>
@@ -77,40 +77,40 @@ export default function SettingsPage() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const s = StyleSheet.create({
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   root: {
-    justifyContent: 'center',
+    justifyContent: 'center'
     // alignItems: 'center',
   },
   groupContainer: {
-    padding: 12,
+    padding: 12
   },
   groupTitle: {
     fontSize: 14,
-    textTransform: 'uppercase',
+    textTransform: 'uppercase'
     // fontFamily: 'JosefinSans-Regular',
   },
   groupItem: {
     flexDirection: 'row',
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   groupItemTitle: {
-    fontSize: 16,
+    fontSize: 16
   },
   textContainer: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   textPrimary: {
     fontSize: 18,
-    fontFamily: 'JosefinSans-Regular',
+    fontFamily: 'JosefinSans-Regular'
   },
   textSeecondary: {
-    color: 'gray',
-  },
-});
+    color: 'gray'
+  }
+})
