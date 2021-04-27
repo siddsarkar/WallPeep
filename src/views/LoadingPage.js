@@ -6,62 +6,40 @@
  * @flow strict-local
  */
 
-import {useTheme} from '@react-navigation/native';
-import React, {useEffect} from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {useDarkMode} from '../theme/ThemeContext';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native'
+import Layout from '../components/common/Layout'
 
 export default function LoadingPage() {
-  const {dark} = useDarkMode();
-  const {colors} = useTheme();
+    const {colors, dark} = useTheme()
 
-  useEffect(() => {
-    console.log('Loading', dark);
-  }, [dark]);
-
-  const backgroundStyle = {
-    backgroundColor: colors.background,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        backgroundColor={colors.card}
-        barStyle={dark ? 'light-content' : 'dark-content'}
-      />
-
-      <View style={s.loader}>
-        <ActivityIndicator color={colors.text} size="large" />
-        <Text
-          style={[
-            s.text,
-            {
-              color: colors.text,
-            },
-          ]}>
-          {dark ? 'true' : 'false'}...
-        </Text>
-      </View>
-    </SafeAreaView>
-  );
+    return (
+        <Layout>
+            <View style={s.loader}>
+                <ActivityIndicator color={colors.text} size="large" />
+                <Text
+                    style={[
+                        s.text,
+                        {
+                            color: colors.text
+                        }
+                    ]}>
+                    {dark ? 'true' : 'false'}...
+                </Text>
+            </View>
+        </Layout>
+    )
 }
 
 const s = StyleSheet.create({
-  loader: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  },
-
-  text: {
-    marginTop: 10,
-    fontFamily: 'JosefinSans-Regular',
-  },
-});
+    loader: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%'
+    },
+    text: {
+        marginTop: 10,
+        fontFamily: 'JosefinSans-Regular'
+    }
+})

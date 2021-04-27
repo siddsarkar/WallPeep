@@ -6,65 +6,54 @@
  * @flow strict-local
  */
 
-import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
+import {ScrollView, StyleSheet, Text, View} from 'react-native'
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {
-  DebugInstructions,
-  Header,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Section from '../components/common/Section';
+    DebugInstructions,
+    Header,
+    ReloadInstructions
+} from 'react-native/Libraries/NewAppScreen'
+import Layout from '../components/common/Layout'
+import Section from '../components/common/Section'
 
 const LandingPage = () => {
-  const {dark, colors} = useTheme();
+    const {colors} = useTheme()
 
-  const backgroundStyle = {
-    backgroundColor: colors.background,
-    color: colors.text,
-  };
+    const backgroundStyle = {
+        backgroundColor: colors.background
+    }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        backgroundColor={colors.background}
-        barStyle={dark ? 'light-content' : 'dark-content'}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View style={backgroundStyle}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+    return (
+        <Layout>
+            <ScrollView
+                contentInsetAdjustmentBehavior="automatic"
+                style={backgroundStyle}>
+                <Header />
+                <View style={backgroundStyle}>
+                    <Section title="Step One">
+                        Edit <Text style={styles.highlight}>App.js</Text> to
+                        change this screen and then come back to see your edits.
+                    </Section>
+                    <Section title="See Your Changes">
+                        <ReloadInstructions />
+                    </Section>
+                    <Section title="Debug">
+                        <DebugInstructions />
+                    </Section>
+                    <Section title="Learn More">
+                        Read the docs to discover what to do next:
+                    </Section>
+                </View>
+            </ScrollView>
+        </Layout>
+    )
+}
 
-export default LandingPage;
+export default LandingPage
 
 const styles = StyleSheet.create({
-  highlight: {
-    fontWeight: '700',
-  },
-});
+    highlight: {
+        fontWeight: '700'
+    }
+})

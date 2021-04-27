@@ -6,28 +6,16 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  StatusBar,
-  Text,
-  useColorScheme,
-} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {useTheme} from '@react-navigation/native'
+import React from 'react'
+import {Text} from 'react-native'
+import Layout from '../components/common/Layout'
 
 export default function LoginPage() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Text>Loading...</Text>
-      <ActivityIndicator />
-    </SafeAreaView>
-  );
+    const {colors} = useTheme()
+    return (
+        <Layout>
+            <Text style={{color: colors.text}}>Login</Text>
+        </Layout>
+    )
 }
