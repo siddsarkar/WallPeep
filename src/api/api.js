@@ -20,5 +20,27 @@ export default {
             }
             throw response.status
         })
+    },
+    getCollections: async accessToken => {
+        const requestURL = `/collections`
+        const driveRequest = generateRequest(accessToken, requestURL)
+
+        return await fetch(driveRequest).then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+            throw response.status
+        })
+    },
+    getUserCollections: async (accessToken, username) => {
+        const requestURL = `/users/${username}/collections`
+        const driveRequest = generateRequest(accessToken, requestURL)
+
+        return await fetch(driveRequest).then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+            throw response.status
+        })
     }
 }
