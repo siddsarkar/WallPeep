@@ -17,16 +17,20 @@ import {
     View
 } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {useDispatch} from 'react-redux'
 import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
+import {fetchUser} from '../redux/actions/userActions'
 
 export default () => {
     const [query, setQuery] = useState('')
-    const {colors, dark} = useTheme()
+    const {colors} = useTheme()
     const [isLoading, setLoading] = useState(false)
     const [data, setData] = useState([])
+    const dispatch = useDispatch()
 
     const fetchQuery = () => {
+        dispatch(fetchUser())
         setLoading(true)
         fetch(
             `https://api.unsplash.com/search/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw&query=${query}`
@@ -43,7 +47,7 @@ export default () => {
                     returnKeyType="search"
                     onSubmitEditing={fetchQuery}
                     value={query}
-                    onChangeText={query => setQuery(query)}
+                    onChangeText={q => setQuery(q)}
                     placeholderTextColor={colors.placeholder}
                     style={[
                         s.textField,
@@ -53,7 +57,8 @@ export default () => {
                             // borderColor: colors.inputborder
                         }
                     ]}
-                    placeholder="Write something to search"></TextInput>
+                    placeholder="Write something to search"
+                />
                 <MaterialIcons
                     name="search"
                     size={28}

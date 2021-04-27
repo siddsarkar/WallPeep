@@ -6,6 +6,7 @@
  * @flow strict-local
  */
 
+import {useTheme} from '@react-navigation/native'
 import React from 'react'
 import {Text} from 'react-native'
 import Layout from '../components/common/Layout'

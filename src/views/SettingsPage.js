@@ -1,17 +1,31 @@
 import {useTheme} from '@react-navigation/native'
 import React, {useState} from 'react'
-import {ScrollView, StyleSheet, Switch, Text, View} from 'react-native'
+import {
+    ScrollView,
+    StyleSheet,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 import Layout from '../components/common/Layout'
+import {logoutUser} from '../redux/actions/userActions'
 import {useDarkMode} from '../theme/ThemeContext'
 
 export default function SettingsPage() {
     const [isEnabled, setIsEnabled] = useState(dark)
     const {dark, toggleDark} = useDarkMode()
     const {colors} = useTheme()
+    const dispatch = useDispatch()
 
     const toggleSwitch = () => {
         setIsEnabled(!isEnabled)
         toggleDark(!dark)
+    }
+
+    const handleLogout = () => {
+        dispatch(logoutUser())
     }
 
     return (
@@ -63,6 +77,42 @@ export default function SettingsPage() {
                         </View>
                     </View>
                 </View>
+                <View
+                    style={[
+                        s.groupContainer,
+                        {
+                            backgroundColor: colors.card
+                        }
+                    ]}>
+                    <Text
+                        style={[
+                            s.groupTitle,
+                            {
+                                color: colors.primary
+                            }
+                        ]}>
+                        User
+                    </Text>
+                    <TouchableOpacity
+                        onPress={handleLogout}
+                        style={s.groupItem}>
+                        <View style={s.textContainer}>
+                            <Text
+                                style={[
+                                    s.textPrimary,
+                                    {
+                                        color: colors.text
+                                    }
+                                ]}>
+                                Logout
+                            </Text>
+                            <Text style={s.textSeecondary}>
+                                {dark ? 'on' : 'off'}
+                            </Text>
+                        </View>
+                        <View style={s.grow} />
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
         </Layout>
     )
@@ -76,7 +126,8 @@ const s = StyleSheet.create({
         justifyContent: 'center'
     },
     groupContainer: {
-        padding: 12
+        padding: 12,
+        marginBottom: 12
     },
     groupTitle: {
         fontSize: 14,
