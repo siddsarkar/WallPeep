@@ -10,8 +10,8 @@ export default ({image}) => {
     const {colors} = useTheme()
 
     useEffect(() => {
-        Image.getSize(image.urls.small, (w, h) => setHeight(h))
-    }, [])
+        Image.getSize(image.urls.small, (_, h) => setHeight(h))
+    }, [image.urls.small])
 
     return (
         <View
@@ -50,7 +50,7 @@ export default ({image}) => {
                     <Icon />
                 </View>
             </View>
-            <View style={{position: 'relative'}}>
+            <View style={s.imageContainer}>
                 <Image
                     source={{uri: image.urls.small}}
                     style={[s.image, {height}]}
@@ -116,6 +116,9 @@ const s = StyleSheet.create({
     },
     textSeecondary: {
         color: 'gray'
+    },
+    imageContainer: {
+        position: 'relative'
     },
     iconContainer: {
         justifyContent: 'center',

@@ -1,69 +1,26 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {NavigationContainer, useTheme} from '@react-navigation/native'
+import {useTheme} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import React, {useState} from 'react'
-import {Text} from 'react-native'
+import React from 'react'
+import {StyleSheet, Text} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import {darkTheme, lightTheme} from '../theme/theme'
 import BrowsePage from '../views/BrowsePage'
 import LoadingPage from '../views/LoadingPage'
-import LoginPage from '../views/LoginPage'
 import SearchPage from '../views/SearchPage'
 import SettingsPage from '../views/SettingsPage'
-import {useDarkMode} from './../theme/ThemeContext'
-
-const SearchStack = createStackNavigator()
-function SearchStackScreen() {
-    const {colors} = useTheme()
-    return (
-        <SearchStack.Navigator headerMode="none">
-            <HomeStack.Screen name="Browse" component={SearchPage} />
-        </SearchStack.Navigator>
-    )
-}
-const HomeStack = createStackNavigator()
-function HomeStackScreen() {
-    const {colors} = useTheme()
-    return (
-        <HomeStack.Navigator>
-            <HomeStack.Screen name="Browse" component={BrowsePage} />
-        </HomeStack.Navigator>
-    )
-}
-
-const GalleryStack = createStackNavigator()
-function GalleryStackScreen() {
-    return (
-        <GalleryStack.Navigator>
-            <GalleryStack.Screen name="Latest" component={LoadingPage} />
-        </GalleryStack.Navigator>
-    )
-}
-const SettingsStack = createStackNavigator()
-function SettingsStackScreen() {
-    return (
-        <SettingsStack.Navigator>
-            <SettingsStack.Screen name="Settings" component={SettingsPage} />
-        </SettingsStack.Navigator>
-    )
-}
 
 const Tab = createBottomTabNavigator()
-function AppStack() {
+export default function AppNavigator() {
+    const {colors} = useTheme()
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
-                tabBarLabel: ({focused, color}) => {
-                    return focused ? (
-                        <Text
-                            style={{
-                                color,
-                                fontFamily: 'JosefinSans-Regular'
-                            }}>
+                tabBarLabel: ({focused, color}) =>
+                    focused ? (
+                        <Text style={[s.tabLabelStyle, color]}>
                             {route.name}
                         </Text>
-                    ) : null
-                },
+                    ) : null,
                 tabBarIcon: ({focused, color, size}) => {
                     let name
                     if (route.name === 'Home') {
@@ -90,7 +47,7 @@ function AppStack() {
                 activeTintColor: colors.primary,
                 inactiveTintColor: 'gray',
                 tabStyle: {
-                    paddingVertical: 5
+                    paddingVertical: 5 // removes spacing between icon & label
                 },
                 style: {
                     borderTopWidth: 0,
@@ -102,8 +59,7 @@ function AppStack() {
                     shadowRadius: 20,
                     shadowOffset: {width: 0, height: 0}
                 }
-            }}
-            initialRouteName="Home">
+            }}>
             <Tab.Screen name="Home" component={HomeStackScreen} />
             <Tab.Screen name="Search" component={SearchStackScreen} />
             <Tab.Screen name="Gallery" component={GalleryStackScreen} />
@@ -112,22 +68,43 @@ function AppStack() {
     )
 }
 
-const Stack = createStackNavigator()
-function AuthStack(params) {
+const s = StyleSheet.create({
+    tabLabelStyle: {
+        fontFamily: 'JosefinSans-Regular'
+    }
+})
+
+// Stacks For Each Tab
+const SearchStack = createStackNavigator()
+function SearchStackScreen() {
     return (
-        <Stack.Navigator headerMode="none">
-            <Stack.Screen name="Login" component={LoginPage} />
-        </Stack.Navigator>
+        <SearchStack.Navigator headerMode="none">
+            <HomeStack.Screen name="Browse" component={SearchPage} />
+        </SearchStack.Navigator>
+    )
+}
+const HomeStack = createStackNavigator()
+function HomeStackScreen() {
+    return (
+        <HomeStack.Navigator>
+            <HomeStack.Screen name="Browse" component={BrowsePage} />
+        </HomeStack.Navigator>
     )
 }
 
-export default function Navigation() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const {dark} = useDarkMode()
-    const {colors} = useTheme()
+const GalleryStack = createStackNavigator()
+function GalleryStackScreen() {
     return (
-        <NavigationContainer theme={dark ? darkTheme : lightTheme}>
-            {isLoggedIn ? <AppStack /> : <AuthStack />}
-        </NavigationContainer>
+        <GalleryStack.Navigator>
+            <GalleryStack.Screen name="Latest" component={LoadingPage} />
+        </GalleryStack.Navigator>
+    )
+}
+const SettingsStack = createStackNavigator()
+function SettingsStackScreen() {
+    return (
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen name="Settings" component={SettingsPage} />
+        </SettingsStack.Navigator>
     )
 }

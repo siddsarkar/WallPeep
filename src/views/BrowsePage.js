@@ -19,8 +19,7 @@ import {
 import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
 
-export default function BrowsePage({ref}) {
-    const [mounted, setMounted] = useState(false)
+export default function BrowsePage() {
     const {colors} = useTheme()
     const [json, setJson] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -36,7 +35,7 @@ export default function BrowsePage({ref}) {
             `https://api.unsplash.com/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw`
         )
             .then(response => response.json())
-            .then(json => setJson(json))
+            .then(data => setJson(data))
             .catch(error => console.error(error))
             .finally(() => setRefreshing(false))
     }
@@ -47,14 +46,14 @@ export default function BrowsePage({ref}) {
             `https://api.unsplash.com/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw`
         )
             .then(response => response.json())
-            .then(json => setJson(json))
+            .then(data => setJson(data))
             .catch(error => console.error(error))
             .finally(() => setIsLoading(false))
     }
 
     useEffect(() => {
         fetchPhotos()
-    }, [mounted])
+    }, [])
 
     return (
         <Layout>

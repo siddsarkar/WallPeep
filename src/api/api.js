@@ -2,6 +2,7 @@ function generateRequest(accessToken, endpoint = '/') {
     const requestURL = `https://api.unsplash.com${endpoint}`
     const requestHeaders = new Headers()
     requestHeaders.append('Authorization', `Bearer ${accessToken}`)
+    // eslint-disable-next-line no-undef
     return new Request(requestURL, {
         method: 'GET',
         headers: requestHeaders

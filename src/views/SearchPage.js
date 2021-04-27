@@ -22,7 +22,7 @@ import Layout from '../components/common/Layout'
 
 export default () => {
     const [query, setQuery] = useState('')
-    const {colors, dark} = useTheme()
+    const {colors} = useTheme()
     const [isLoading, setLoading] = useState(false)
     const [data, setData] = useState([])
 
@@ -43,7 +43,7 @@ export default () => {
                     returnKeyType="search"
                     onSubmitEditing={fetchQuery}
                     value={query}
-                    onChangeText={query => setQuery(query)}
+                    onChangeText={q => setQuery(q)}
                     placeholderTextColor={colors.placeholder}
                     style={[
                         s.textField,
@@ -53,7 +53,8 @@ export default () => {
                             // borderColor: colors.inputborder
                         }
                     ]}
-                    placeholder="Write something to search"></TextInput>
+                    placeholder="Write something to search"
+                />
                 <MaterialIcons
                     name="search"
                     size={28}
