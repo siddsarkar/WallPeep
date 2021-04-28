@@ -8,14 +8,18 @@ import {
     Text,
     View
 } from 'react-native'
+import {useDispatch} from 'react-redux'
+import api from '../api/api'
 import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
+import store from '../redux/storeConfig'
 
 export default function BrowsePage({navigation}) {
     const {colors} = useTheme()
     const [json, setJson] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
+    const dispatch = useDispatch()
 
     const onRefresh = useCallback(() => {
         reFetchPhotos()
@@ -23,10 +27,8 @@ export default function BrowsePage({navigation}) {
 
     const reFetchPhotos = () => {
         setRefreshing(true)
-        fetch(
-            `https://api.unsplash.com/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw`
-        )
-            .then(response => response.json())
+        setJson([])
+        api.getPhotos(store.getState().user.accessToken)
             .then(data => setJson(data))
             .catch(error => console.error(error))
             .finally(() => setRefreshing(false))
@@ -34,10 +36,7 @@ export default function BrowsePage({navigation}) {
 
     const fetchPhotos = () => {
         setIsLoading(true)
-        fetch(
-            `https://api.unsplash.com/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw`
-        )
-            .then(response => response.json())
+        api.getPhotos(store.getState().user.accessToken)
             .then(data => setJson(data))
             .catch(error => console.error(error))
             .finally(() => setIsLoading(false))
