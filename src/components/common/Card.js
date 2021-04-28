@@ -1,15 +1,38 @@
 import {useTheme} from '@react-navigation/native'
-import React from 'react'
+import React, {useState} from 'react'
 import {Image, StyleSheet, Text, View} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import {useDispatch} from 'react-redux'
+import {togglePhotoLike} from '../../redux/actions/imageActions'
 import Avatar from '../ui/Avatar'
 import Icon from '../ui/Icon'
 
 export default ({image, onImageClick}) => {
     const {colors} = useTheme()
+    const [likeLoading, setLikeLoading] = useState(false)
+    const [isLiked, setIsLiked] = useState(image.liked_by_user)
+    const dispatch = useDispatch()
 
     function getHeight(h, w) {
         return (h / w) * 500
+    }
+
+    const handleLikeChange = () => {
+        setLikeLoading(true)
+
+        dispatch(
+            togglePhotoLike(
+                {
+                    ...image,
+                    liked_by_user: isLiked
+                },
+                photo => {
+                    console.log(photo.liked_by_user)
+                    setIsLiked(photo.liked_by_user)
+                    setLikeLoading(false)
+                }
+            )
+        )
     }
 
     return (
@@ -72,22 +95,23 @@ export default ({image, onImageClick}) => {
                         style={s.icon}
                         name="heart"
                         size={30}
-                        color={!image.liked_by_user ? colors.primary : 'gray'}
+                        onPress={handleLikeChange}
+                        color={isLiked ? colors.primary : 'gray'}
                     />
                     <MaterialCommunityIcons
                         style={s.icon}
                         name="view-grid-plus"
                         size={30}
-                        color={image.liked_by_user ? colors.primary : 'gray'}
+                        color={
+                            image.current_user_collections.length > 0
+                                ? colors.primary
+                                : 'gray'
+                        }
                     />
                 </View>
 
                 <View style={s.grow} />
-                <MaterialCommunityIcons
-                    name="share"
-                    size={30}
-                    color={image.liked_by_user ? colors.primary : 'gray'}
-                />
+                <MaterialCommunityIcons name="share" size={30} color="gray" />
             </View>
         </View>
     )
