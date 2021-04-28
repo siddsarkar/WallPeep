@@ -1,21 +1,19 @@
-import AsyncStore from '../../utils/AsyncStore'
 import * as types from '../types'
 
-const retrieveToken = async () => {
-    const asToken = await AsyncStore.getItem('access_token', null)
-    console.log(asToken)
-    if (asToken === null) return false
-    return asToken
-}
-
 const initialState = {
-    isLoggedIn: retrieveToken() === false ? false : true,
-    accessToken: retrieveToken(),
+    isLoggedIn: false,
+    accessToken: null,
     info: {}
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case types.USER_RETRIEVED:
+            return {
+                ...state,
+                isLoggedIn: action.isLoggedIn,
+                accessToken: action.accessToken
+            }
         case types.USER_LOGGED_IN:
             return {
                 ...state,

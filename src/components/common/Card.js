@@ -1,17 +1,16 @@
 import {useTheme} from '@react-navigation/native'
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {Image, StyleSheet, Text, View} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Avatar from '../ui/Avatar'
 import Icon from '../ui/Icon'
 
-export default ({image}) => {
-    const [height, setHeight] = useState(400)
+export default ({image, onImageClick}) => {
     const {colors} = useTheme()
 
-    useEffect(() => {
-        Image.getSize(image.urls.small, (_, h) => setHeight(h))
-    }, [image.urls.small])
+    function getHeight(h, w) {
+        return (h / w) * 500
+    }
 
     return (
         <View
@@ -53,7 +52,10 @@ export default ({image}) => {
             <View style={s.imageContainer}>
                 <Image
                     source={{uri: image.urls.small}}
-                    style={[s.image, {height}]}
+                    style={[
+                        s.image,
+                        {height: getHeight(image.height, image.width)}
+                    ]}
                 />
 
                 <MaterialCommunityIcons
@@ -61,6 +63,7 @@ export default ({image}) => {
                     name="crop-free"
                     size={30}
                     color={colors.card}
+                    onPress={() => onImageClick(image.urls.small)}
                 />
             </View>
             <View style={s.header}>
@@ -95,7 +98,7 @@ const s = StyleSheet.create({
         flexGrow: 1
     },
     root: {
-        marginVertical: 6,
+        marginBottom: 12,
         width: '100%',
         shadowColor: '#000',
         shadowOpacity: 0.1,
@@ -126,7 +129,7 @@ const s = StyleSheet.create({
     },
     image: {
         // height: 400,
-        width: 400
+        width: '100%'
     },
     iconGroup: {
         flexDirection: 'row'

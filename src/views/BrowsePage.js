@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import {useTheme} from '@react-navigation/native'
 import React, {useCallback, useEffect, useState} from 'react'
 import {
@@ -19,7 +11,7 @@ import {
 import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
 
-export default function BrowsePage() {
+export default function BrowsePage({navigation}) {
     const {colors} = useTheme()
     const [json, setJson] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -49,6 +41,13 @@ export default function BrowsePage() {
             .then(data => setJson(data))
             .catch(error => console.error(error))
             .finally(() => setIsLoading(false))
+    }
+
+    const handleImage = url => {
+        navigation.navigate({
+            name: 'Modal',
+            params: {url}
+        })
     }
 
     useEffect(() => {
@@ -81,7 +80,7 @@ export default function BrowsePage() {
                     contentContainerStyle={s.root}>
                     {json.map(image => (
                         <View style={s.cardContainer} key={image.id}>
-                            <Card image={image} />
+                            <Card onImageClick={handleImage} image={image} />
                         </View>
                     ))}
                 </ScrollView>
@@ -97,13 +96,18 @@ const s = StyleSheet.create({
         height: '100%'
     },
     root: {
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%'
     },
     text: {
         marginTop: 10,
         fontFamily: 'JosefinSans-Regular'
     },
     cardContainer: {
-        // marginBottom: 12
+        // marginBottom: 12,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

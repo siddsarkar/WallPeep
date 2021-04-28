@@ -1,0 +1,8 @@
+export {default as BrowsePage} from './BrowsePage'
+export {default as CollectionPage} from './CollectionPage'
+export {default as LandingPage} from './LandingPage'
+export {default as LoadingPage} from './LoadingPage'
+export {default as LoginPage} from './LoginPage'
+export {default as RegisterPage} from './RegisterPage'
+export {default as SearchPage} from './SearchPage'
+export {default as SettingsPage} from './SettingsPage'

@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import {useTheme} from '@react-navigation/native'
 import React, {useState} from 'react'
 import {
@@ -22,7 +14,7 @@ import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
 import {fetchUser} from '../redux/actions/userActions'
 
-export default () => {
+export default function SearchPage() {
     const [query, setQuery] = useState('')
     const {colors} = useTheme()
     const [isLoading, setLoading] = useState(false)

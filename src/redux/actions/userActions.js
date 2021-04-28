@@ -2,6 +2,24 @@ import api from '../../api/api'
 import AsyncStore from '../../utils/AsyncStore'
 import * as types from '../types'
 
+export function retrieveUser(cb, {accessToken}) {
+    return (dispatch, getState) => {
+        if (accessToken) {
+            dispatch({
+                type: types.USER_RETRIEVED,
+                isLoggedIn: true,
+                accessToken
+            })
+        } else {
+            dispatch({
+                type: types.USER_RETRIEVED,
+                isLoggedIn: false
+            })
+        }
+        cb()
+    }
+}
+
 export function fetchUser() {
     return (dispatch, getState) => {
         api.getUserInfo(getState().user.accessToken).then(info => {

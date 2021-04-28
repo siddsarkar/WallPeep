@@ -4,7 +4,7 @@ import * as types from '../types'
 export function fetchCollections(cb) {
     return (dispatch, getState) => {
         api.getCollections(getState().user.accessToken).then(collections => {
-            console.log(collections)
+            // console.log(collections)
             cb()
             return dispatch({
                 type: types.GOT_COLLECTIONS_LIST,

@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import {useTheme} from '@react-navigation/native'
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
@@ -14,7 +6,7 @@ import authorize from '../api/authorize'
 import Layout from '../components/common/Layout'
 import {loginUser} from '../redux/actions/userActions'
 
-export default () => {
+export default function LoginPage() {
     const {colors} = useTheme()
     const dispatch = useDispatch()
     const handlePress = async () => {

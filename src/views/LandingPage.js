@@ -1,59 +1,45 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import {useTheme} from '@react-navigation/native'
-import React from 'react'
-import {ScrollView, StyleSheet, Text, View} from 'react-native'
-import {
-    DebugInstructions,
-    Header,
-    ReloadInstructions
-} from 'react-native/Libraries/NewAppScreen'
+import React, {useEffect} from 'react'
+import {Image, StyleSheet, View} from 'react-native'
 import Layout from '../components/common/Layout'
-import Section from '../components/common/Section'
 
-const LandingPage = () => {
+const LandingPage = ({route, navigation}) => {
     const {colors} = useTheme()
 
-    const backgroundStyle = {
-        backgroundColor: colors.background
-    }
+    useEffect(() => {
+        if (route.params.url) {
+            // Post updated, do something with `route.params.post`
+            // For example, send the post to the server
+            console.log(route.params.url)
+        }
+        // ImmersiveMode.fullLayout(true)
+
+        // return () => {
+        //     ImmersiveMode.fullLayout(false)
+        // }
+    }, [route.params?.url])
 
     return (
         <Layout>
-            <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}>
-                <Header />
-                <View style={backgroundStyle}>
-                    <Section title="Step One">
-                        Edit <Text style={styles.highlight}>App.js</Text> to
-                        change this screen and then come back to see your edits.
-                    </Section>
-                    <Section title="See Your Changes">
-                        <ReloadInstructions />
-                    </Section>
-                    <Section title="Debug">
-                        <DebugInstructions />
-                    </Section>
-                    <Section title="Learn More">
-                        Read the docs to discover what to do next:
-                    </Section>
-                </View>
-            </ScrollView>
+            <View style={[s.root, {backgroundColor: colors.background}]}>
+                <Image source={{uri: route.params.url}} style={s.image} />
+            </View>
         </Layout>
     )
 }
 
 export default LandingPage
 
-const styles = StyleSheet.create({
-    highlight: {
-        fontWeight: '700'
+const s = StyleSheet.create({
+    root: {
+        height: '100%',
+        width: '100%',
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    image: {
+        width: '100%',
+        height: 500
     }
 })

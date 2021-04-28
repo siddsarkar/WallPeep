@@ -1,3 +1,4 @@
+export const USER_RETRIEVED = 'USER_RETRIEVED'
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
 export const GOT_USER_INFO = 'GOT_USER_INFO'
