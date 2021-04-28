@@ -44,10 +44,10 @@ export default function BrowsePage({navigation}) {
             .finally(() => setIsLoading(false))
     }
 
-    const handleImage = url => {
+    const handleImage = (url, height, width) => {
         navigation.navigate({
             name: 'Modal',
-            params: {url}
+            params: {url, height, width}
         })
     }
     const handleAddToCollection = photo_id => {

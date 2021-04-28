@@ -1,6 +1,13 @@
 import {useTheme} from '@react-navigation/native'
 import React, {useState} from 'react'
-import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native'
+import {
+    ActivityIndicator,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {useDispatch} from 'react-redux'
 import {togglePhotoLike} from '../../redux/actions/imageActions'
@@ -75,7 +82,11 @@ export default ({image, onImageClick, onAddToCollection}) => {
                     <Icon />
                 </View>
             </View>
-            <View style={s.imageContainer}>
+            <Pressable
+                onPress={() =>
+                    onImageClick(image.urls.regular, image.height, image.width)
+                }
+                style={s.imageContainer}>
                 <Image
                     source={{uri: image.urls.small}}
                     style={[
@@ -89,9 +100,8 @@ export default ({image, onImageClick, onAddToCollection}) => {
                     name="crop-free"
                     size={30}
                     color={colors.card}
-                    onPress={() => onImageClick(image.urls.small)}
                 />
-            </View>
+            </Pressable>
             <View style={s.header}>
                 <View style={s.iconGroup}>
                     {likeLoading ? (

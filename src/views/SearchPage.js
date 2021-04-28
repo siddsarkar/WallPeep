@@ -7,12 +7,13 @@ import {
     StyleSheet,
     Text,
     TextInput,
+    TouchableOpacity,
     View
 } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Layout from '../components/common/Layout'
 
-export default function SearchPage() {
+export default function SearchPage({navigation}) {
     const [query, setQuery] = useState('')
     const {colors} = useTheme()
     const [isLoading, setLoading] = useState(false)
@@ -71,12 +72,24 @@ export default function SearchPage() {
             ) : (
                 <ScrollView contentContainerStyle={s.root}>
                     {data.map(image => (
-                        <View style={s.cardContainer} key={image.id}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate({
+                                    name: 'Modal',
+                                    params: {
+                                        url: image.urls.regular,
+                                        height: image.height,
+                                        width: image.width
+                                    }
+                                })
+                            }}
+                            style={s.cardContainer}
+                            key={image.id}>
                             <Image
                                 style={s.image}
                                 source={{uri: image.urls.thumb}}
                             />
-                        </View>
+                        </TouchableOpacity>
                     ))}
                 </ScrollView>
             )}
