@@ -1,24 +1,10 @@
 import {useTheme} from '@react-navigation/native'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Image, StyleSheet, View} from 'react-native'
 import Layout from '../components/common/Layout'
 
-const LandingPage = ({route, navigation}) => {
+const ImageView = ({route}) => {
     const {colors} = useTheme()
-
-    useEffect(() => {
-        if (route.params.url) {
-            // Post updated, do something with `route.params.post`
-            // For example, send the post to the server
-            console.log(route.params.url)
-        }
-        // ImmersiveMode.fullLayout(true)
-
-        // return () => {
-        //     ImmersiveMode.fullLayout(false)
-        // }
-    }, [route.params?.url])
-
     return (
         <Layout>
             <View style={[s.root, {backgroundColor: colors.background}]}>
@@ -28,7 +14,7 @@ const LandingPage = ({route, navigation}) => {
     )
 }
 
-export default LandingPage
+export default ImageView
 
 const s = StyleSheet.create({
     root: {

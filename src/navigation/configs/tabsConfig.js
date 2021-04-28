@@ -30,22 +30,6 @@ export default {
     },
     iconLabel: ({focused, color, name}) => {
         return focused && <Text style={[s.tabLabelStyle, {color}]}>{name}</Text>
-    },
-    options: {
-        inactiveTintColor: 'gray',
-        tabStyle: {
-            paddingVertical: 4 // removes spacing between icon & label
-        },
-        style: {
-            borderTopWidth: 0,
-            paddingTop: 3,
-            paddingBottom: 4,
-            height: 58,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowRadius: 20,
-            shadowOffset: {width: 0, height: 0}
-        }
     }
 }
 

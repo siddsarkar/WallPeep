@@ -41,7 +41,7 @@ export default function CollectionPage() {
                                 color: colors.text
                             }
                         ]}>
-                        ss...
+                        Loading Collections...
                     </Text>
                 </View>
             ) : (

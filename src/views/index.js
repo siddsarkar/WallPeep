@@ -1,6 +1,7 @@
+export {default as AddToCollectionView} from './AddToCollectionView'
 export {default as BrowsePage} from './BrowsePage'
 export {default as CollectionPage} from './CollectionPage'
-export {default as LandingPage} from './LandingPage'
+export {default as ImageView} from './ImageView'
 export {default as LoadingPage} from './LoadingPage'
 export {default as LoginPage} from './LoginPage'
 export {default as RegisterPage} from './RegisterPage'

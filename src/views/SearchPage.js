@@ -2,6 +2,7 @@ import {useTheme} from '@react-navigation/native'
 import React, {useState} from 'react'
 import {
     ActivityIndicator,
+    Image,
     ScrollView,
     StyleSheet,
     Text,
@@ -9,20 +10,15 @@ import {
     View
 } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import {useDispatch} from 'react-redux'
-import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
-import {fetchUser} from '../redux/actions/userActions'
 
 export default function SearchPage() {
     const [query, setQuery] = useState('')
     const {colors} = useTheme()
     const [isLoading, setLoading] = useState(false)
     const [data, setData] = useState([])
-    const dispatch = useDispatch()
 
     const fetchQuery = () => {
-        dispatch(fetchUser())
         setLoading(true)
         fetch(
             `https://api.unsplash.com/search/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw&query=${query}`
@@ -60,7 +56,7 @@ export default function SearchPage() {
             </View>
 
             {isLoading ? (
-                <View style={s.root}>
+                <View style={s.loader}>
                     <ActivityIndicator color={colors.text} size="large" />
                     <Text
                         style={[
@@ -76,7 +72,10 @@ export default function SearchPage() {
                 <ScrollView contentContainerStyle={s.root}>
                     {data.map(image => (
                         <View style={s.cardContainer} key={image.id}>
-                            <Card image={image} />
+                            <Image
+                                style={s.image}
+                                source={{uri: image.urls.thumb}}
+                            />
                         </View>
                     ))}
                 </ScrollView>
@@ -99,6 +98,11 @@ export default function SearchPage() {
 }
 
 const s = StyleSheet.create({
+    loader: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%'
+    },
     searchBar: {
         alignItems: 'center',
         padding: 12,
@@ -122,8 +126,25 @@ const s = StyleSheet.create({
         fontFamily: 'JosefinSans-Regular'
     },
     root: {
-        flexDirection: 'column',
         alignItems: 'center',
-        position: 'relative'
+        justifyContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        flexWrap: 'wrap'
+    },
+    cardContainer: {
+        width: '25%',
+        padding: 4
+        // height: 200
+        // marginBottom: 12,
+        // width: '100%',
+        // justifyContent: 'center',
+        // alignItems: 'center'
+    },
+    image: {
+        borderRadius: 6,
+        overflow: 'hidden',
+        width: '100%',
+        height: 200
     }
 })

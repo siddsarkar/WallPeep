@@ -8,7 +8,6 @@ import {
     Text,
     View
 } from 'react-native'
-import {useDispatch} from 'react-redux'
 import api from '../api/api'
 import Card from '../components/common/Card'
 import Layout from '../components/common/Layout'
@@ -19,7 +18,6 @@ export default function BrowsePage({navigation}) {
     const [json, setJson] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
-    const dispatch = useDispatch()
 
     const onRefresh = useCallback(() => {
         reFetchPhotos()
@@ -27,11 +25,15 @@ export default function BrowsePage({navigation}) {
 
     const reFetchPhotos = () => {
         setRefreshing(true)
+        setIsLoading(true)
         setJson([])
         api.getPhotos(store.getState().user.accessToken)
             .then(data => setJson(data))
             .catch(error => console.error(error))
-            .finally(() => setRefreshing(false))
+            .finally(() => {
+                setRefreshing(false)
+                setIsLoading(false)
+            })
     }
 
     const fetchPhotos = () => {
@@ -46,6 +48,12 @@ export default function BrowsePage({navigation}) {
         navigation.navigate({
             name: 'Modal',
             params: {url}
+        })
+    }
+    const handleAddToCollection = photo_id => {
+        navigation.navigate({
+            name: 'AddToCollection',
+            params: {photo_id}
         })
     }
 
@@ -79,7 +87,11 @@ export default function BrowsePage({navigation}) {
                     contentContainerStyle={s.root}>
                     {json.map(image => (
                         <View style={s.cardContainer} key={image.id}>
-                            <Card onImageClick={handleImage} image={image} />
+                            <Card
+                                onAddToCollection={handleAddToCollection}
+                                onImageClick={handleImage}
+                                image={image}
+                            />
                         </View>
                     ))}
                 </ScrollView>
@@ -99,14 +111,20 @@ const s = StyleSheet.create({
         justifyContent: 'center',
         width: '100%'
     },
-    text: {
-        marginTop: 10,
-        fontFamily: 'JosefinSans-Regular'
-    },
     cardContainer: {
         // marginBottom: 12,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    text: {
+        marginTop: 10,
+        fontFamily: 'JosefinSans-Regular'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22
     }
 })

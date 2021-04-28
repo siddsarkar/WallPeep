@@ -1,13 +1,13 @@
 import {useTheme} from '@react-navigation/native'
 import React, {useState} from 'react'
-import {Image, StyleSheet, Text, View} from 'react-native'
+import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {useDispatch} from 'react-redux'
 import {togglePhotoLike} from '../../redux/actions/imageActions'
 import Avatar from '../ui/Avatar'
 import Icon from '../ui/Icon'
 
-export default ({image, onImageClick}) => {
+export default ({image, onImageClick, onAddToCollection}) => {
     const {colors} = useTheme()
     const [likeLoading, setLikeLoading] = useState(false)
     const [isLiked, setIsLiked] = useState(image.liked_by_user)
@@ -27,12 +27,15 @@ export default ({image, onImageClick}) => {
                     liked_by_user: isLiked
                 },
                 photo => {
+                    setLikeLoading(false)
                     console.log(photo.liked_by_user)
                     setIsLiked(photo.liked_by_user)
-                    setLikeLoading(false)
                 }
             )
         )
+    }
+    const handleAddToCollection = () => {
+        onAddToCollection(image.id)
     }
 
     return (
@@ -91,14 +94,23 @@ export default ({image, onImageClick}) => {
             </View>
             <View style={s.header}>
                 <View style={s.iconGroup}>
+                    {likeLoading ? (
+                        <ActivityIndicator
+                            size="small"
+                            style={s.icon}
+                            color="grey"
+                        />
+                    ) : (
+                        <MaterialCommunityIcons
+                            style={s.icon}
+                            name="heart"
+                            size={30}
+                            onPress={handleLikeChange}
+                            color={isLiked ? colors.primary : 'gray'}
+                        />
+                    )}
                     <MaterialCommunityIcons
-                        style={s.icon}
-                        name="heart"
-                        size={30}
-                        onPress={handleLikeChange}
-                        color={isLiked ? colors.primary : 'gray'}
-                    />
-                    <MaterialCommunityIcons
+                        onPress={handleAddToCollection}
                         style={s.icon}
                         name="view-grid-plus"
                         size={30}
@@ -159,7 +171,8 @@ const s = StyleSheet.create({
         flexDirection: 'row'
     },
     icon: {
-        paddingRight: 6
+        paddingRight: 6,
+        width: 40
     },
     expandIcon: {
         position: 'absolute',

@@ -13,18 +13,18 @@ export function fetchCollections(cb) {
         })
     }
 }
+
 export function fetchUserCollections(cb) {
     return (dispatch, getState) => {
-        api.getUserCollections(
-            getState().user.accessToken,
-            getState().user.info.username
-        ).then(collections => {
-            console.log(collections)
-            cb()
-            return dispatch({
-                type: types.GOT_COLLECTIONS_LIST,
-                collections
-            })
-        })
+        api.getUserCollections(getState().user.accessToken, 'siddsarkar').then(
+            collections => {
+                console.log(collections)
+                cb()
+                return dispatch({
+                    type: types.GOT_COLLECTIONS_LIST,
+                    collections
+                })
+            }
+        )
     }
 }

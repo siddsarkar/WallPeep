@@ -12,7 +12,11 @@ export default function AppNavigator() {
             headerMode="none"
             mode="modal"
             initialRouteName="Tab">
-            <AppStack.Screen name="Modal" component={views.LandingPage} />
+            <AppStack.Screen
+                name="AddToCollection"
+                component={views.AddToCollectionView}
+            />
+            <AppStack.Screen name="Modal" component={views.ImageView} />
             <AppStack.Screen name="Tab" component={TabNavigator} />
         </AppStack.Navigator>
     )
@@ -33,18 +37,30 @@ function TabNavigator() {
                     return tabsConfig.icon({focused, color, size, name})
                 }
             })}
-            tabBarOptions={[
-                tabsConfig.options,
-                {
-                    activeTintColor: colors.primary
+            tabBarOptions={{
+                activeTintColor: colors.primary,
+
+                inactiveTintColor: 'gray',
+                tabStyle: {
+                    paddingVertical: 2 // removes spacing between icon & label
+                },
+                style: {
+                    borderTopWidth: 0,
+                    paddingTop: 3,
+                    paddingBottom: 4,
+                    height: 55,
+                    shadowColor: '#000',
+                    shadowOpacity: 0.1,
+                    shadowRadius: 20,
+                    shadowOffset: {width: 0, height: 0}
                 }
-            ]}
+            }}
             initialRouteName="Home">
             <Tab.Screen name="Home" component={views.BrowsePage} />
             <Tab.Screen name="Search" component={SearchStackScreen} />
             <Tab.Screen name="Collections" component={GalleryStackScreen} />
-            <Tab.Screen name="Settings" component={SettingsStackScreen} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
+            <Tab.Screen name="Settings" component={SettingsStackScreen} />
         </Tab.Navigator>
     )
 }
