@@ -2,15 +2,13 @@ import {useTheme} from '@react-navigation/native'
 import React, {useState} from 'react'
 import {
     ActivityIndicator,
-    Image,
-    ScrollView,
     StyleSheet,
     Text,
     TextInput,
-    TouchableOpacity,
     View
 } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import ImageGrid from '../components/common/ImageGrid'
 import Layout from '../components/common/Layout'
 
 export default function SearchPage({navigation}) {
@@ -22,13 +20,14 @@ export default function SearchPage({navigation}) {
     const fetchQuery = () => {
         setLoading(true)
         fetch(
-            `https://api.unsplash.com/search/photos?client_id=b5GmlhbzhvbS8olwRMHJydH1_w3NNqIi51jZuJBSepw&query=${query}`
+            `https://api.unsplash.com/search/photos?client_id=05Z6iFwVrlK6_i8d4TkaN4k2c27h1etfTRFUtRHk82c&query=${query}&per_page=30`
         )
             .then(response => response.json())
             .then(json => setData(json.results))
             .catch(error => console.error(error))
             .finally(() => setLoading(false))
     }
+
     return (
         <Layout>
             <View style={[s.searchBar, {backgroundColor: colors.card}]}>
@@ -43,7 +42,6 @@ export default function SearchPage({navigation}) {
                         {
                             color: colors.text,
                             backgroundColor: colors.inputbackground
-                            // borderColor: colors.inputborder
                         }
                     ]}
                     placeholder="Write something to search"
@@ -70,42 +68,20 @@ export default function SearchPage({navigation}) {
                     </Text>
                 </View>
             ) : (
-                <ScrollView contentContainerStyle={s.root}>
-                    {data.map(image => (
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate({
-                                    name: 'Modal',
-                                    params: {
-                                        url: image.urls.regular,
-                                        height: image.height,
-                                        width: image.width
-                                    }
-                                })
-                            }}
-                            style={s.cardContainer}
-                            key={image.id}>
-                            <Image
-                                style={s.image}
-                                source={{uri: image.urls.thumb}}
-                            />
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
+                <ImageGrid
+                    images={data}
+                    imageOnPress={image => {
+                        navigation.navigate({
+                            name: 'Modal',
+                            params: {
+                                url: image.urls.regular,
+                                height: image.height,
+                                width: image.width
+                            }
+                        })
+                    }}
+                />
             )}
-
-            {/* <View style={s.loader}>
-                <ActivityIndicator color={colors.text} size="large" />
-                <Text
-                    style={[
-                        s.text,
-                        {
-                            color: colors.text
-                        }
-                    ]}>
-                    {dark ? 'true' : 'false'}...
-                </Text>
-            </View> */}
         </Layout>
     )
 }
@@ -127,7 +103,6 @@ const s = StyleSheet.create({
         height: 40,
         borderRadius: 6,
         paddingLeft: 40
-        // borderWidth: 1
     },
     searchIcon: {
         position: 'absolute',
@@ -137,27 +112,5 @@ const s = StyleSheet.create({
     text: {
         marginTop: 10,
         fontFamily: 'JosefinSans-Regular'
-    },
-    root: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        flexWrap: 'wrap'
-    },
-    cardContainer: {
-        width: '25%',
-        padding: 4
-        // height: 200
-        // marginBottom: 12,
-        // width: '100%',
-        // justifyContent: 'center',
-        // alignItems: 'center'
-    },
-    image: {
-        borderRadius: 6,
-        overflow: 'hidden',
-        width: '100%',
-        height: 200
     }
 })

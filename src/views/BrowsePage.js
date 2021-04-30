@@ -16,6 +16,7 @@ import store from '../redux/storeConfig'
 export default function BrowsePage({navigation}) {
     const {colors} = useTheme()
     const [json, setJson] = useState([])
+
     const [isLoading, setIsLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     let ref = useRef(null)
@@ -25,22 +26,24 @@ export default function BrowsePage({navigation}) {
     }, [])
 
     const reFetchPhotos = () => {
+        console.log('re-fetch')
         setRefreshing(true)
-        setIsLoading(true)
-        setJson([])
         api.getPhotos(store.getState().user.accessToken)
             .then(data => setJson(data))
             .catch(error => console.error(error))
             .finally(() => {
                 setRefreshing(false)
-                setIsLoading(false)
             })
     }
 
     const fetchPhotos = () => {
+        console.log('fetch')
         setIsLoading(true)
         api.getPhotos(store.getState().user.accessToken)
-            .then(data => setJson(data))
+            .then(data => {
+                setJson(data)
+                // console.log(data)
+            })
             .catch(error => console.error(error))
             .finally(() => setIsLoading(false))
     }
@@ -64,6 +67,14 @@ export default function BrowsePage({navigation}) {
         fetchPhotos()
     }, [])
 
+    const scrollEnd = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const paddingToBottom = 20
+        return (
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom
+        )
+    }
+
     return (
         <Layout>
             {isLoading ? (
@@ -82,6 +93,12 @@ export default function BrowsePage({navigation}) {
             ) : (
                 <ScrollView
                     ref={ref}
+                    onScroll={({nativeEvent}) => {
+                        if (scrollEnd(nativeEvent)) {
+                            console.log('kkk')
+                        }
+                    }}
+                    scrollEventThrottle={1000}
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -99,6 +116,34 @@ export default function BrowsePage({navigation}) {
                         </View>
                     ))}
                 </ScrollView>
+                // <ScrollView
+                //     ref={ref}
+                //     refreshControl={
+                //         <RefreshControl
+                //             refreshing={refreshing}
+                //             onRefresh={onRefresh}
+                //         />
+                //     }
+                //     contentContainerStyle={s.root}>
+                //         {json.map(image => (
+
+                //     ))}
+                // <View style={s.container}>
+                //     <FlatList
+                //         ref={ref}
+                //         keyExtractor={i => i.id}
+                //         data={json}
+                //         renderItem={image => (
+                //             <Card
+                //                 onAddToCollection={handleAddToCollection}
+                //                 onImageClick={handleImage}
+                //                 image={image}
+                //             />
+                //         )}
+                //     />
+                // </View>
+
+                // </ScrollView>
             )}
         </Layout>
     )
@@ -130,5 +175,9 @@ const s = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 22
+    },
+    container: {
+        flex: 1,
+        height: '100%'
     }
 })
