@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native'
-import React, {useCallback, useState} from 'react'
+import React, {useState} from 'react'
 import {
     ActivityIndicator,
     Image,
@@ -15,14 +15,16 @@ import {useDispatch} from 'react-redux'
 import {togglePhotoLike} from '../../redux/actions/imageActions'
 import Avatar from '../ui/Avatar'
 import Icon from '../ui/Icon'
+import BottomPopup from './BottomPopup'
 
 export default ({image, onImageClick, onAddToCollection}) => {
     const {colors} = useTheme()
     const [likeLoading, setLikeLoading] = useState(false)
     const [isLiked, setIsLiked] = useState(image.liked_by_user)
+    const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch()
 
-    const openURL = useCallback(async () => {
+    const openURL = async () => {
         let url = image.links.html
         // Checking if the link is supported for links with custom URL scheme.
         const supported = await Linking.canOpenURL(url)
@@ -35,7 +37,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
             // Alert.alert(`Don't know how to open this URL: ${url}`)
             return
         }
-    }, [image.links.html])
+    }
 
     const handleLikeChange = () => {
         setLikeLoading(true)
@@ -88,7 +90,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
                         {image.user.name}
                     </Text>
                     <Text style={s.textSeecondary}>
-                        {image.likes + ' likes'}
+                        {(isLiked ? image.likes + 1 : image.likes) + ' likes'}
                     </Text>
                 </View>
                 <View style={s.iconContainer}>
@@ -110,6 +112,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
                     name="crop-free"
                     size={30}
                     color={colors.card}
+                    onPress={() => setModalVisible(!modalVisible)}
                 />
             </Pressable>
             <View style={s.header}>
@@ -150,6 +153,11 @@ export default ({image, onImageClick, onAddToCollection}) => {
                     color="gray"
                 />
             </View>
+            <BottomPopup
+                modalVisible={modalVisible}
+                urls={image.urls}
+                toggleModal={() => setModalVisible(!modalVisible)}
+            />
         </View>
     )
 }
