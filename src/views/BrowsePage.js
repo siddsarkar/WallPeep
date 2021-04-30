@@ -1,5 +1,5 @@
-import {useTheme} from '@react-navigation/native'
-import React, {useCallback, useEffect, useState} from 'react'
+import {useScrollToTop, useTheme} from '@react-navigation/native'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {
     ActivityIndicator,
     RefreshControl,
@@ -18,6 +18,7 @@ export default function BrowsePage({navigation}) {
     const [json, setJson] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
+    let ref = useRef(null)
 
     const onRefresh = useCallback(() => {
         reFetchPhotos()
@@ -57,6 +58,8 @@ export default function BrowsePage({navigation}) {
         })
     }
 
+    useScrollToTop(ref)
+
     useEffect(() => {
         fetchPhotos()
     }, [])
@@ -78,6 +81,7 @@ export default function BrowsePage({navigation}) {
                 </View>
             ) : (
                 <ScrollView
+                    ref={ref}
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}

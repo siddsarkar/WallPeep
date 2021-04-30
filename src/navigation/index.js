@@ -24,10 +24,13 @@ export default function RootNavigator() {
 
     const initialLoad = useCallback(async () => {
         setIsLoading(true)
-        let accessToken = await AsyncStore.getItem('access_token')
-        setTimeout(() => {
-            dispatch(retrieveUser(() => setIsLoading(false), {accessToken}))
-        }, 2000)
+        let keys = await AsyncStore.getItem('Keys')
+        if (keys && keys.accessKey && keys.secretKey) {
+            let accessToken = await AsyncStore.getItem('access_token')
+            setTimeout(() => {
+                dispatch(retrieveUser(() => setIsLoading(false), {accessToken}))
+            }, 2000)
+        } else return
     }, [dispatch])
 
     useEffect(() => {

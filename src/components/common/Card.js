@@ -1,14 +1,16 @@
 import {useTheme} from '@react-navigation/native'
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {
     ActivityIndicator,
     Image,
+    Linking,
     Pressable,
     StyleSheet,
     Text,
     View
 } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import {useDispatch} from 'react-redux'
 import {togglePhotoLike} from '../../redux/actions/imageActions'
 import Avatar from '../ui/Avatar'
@@ -20,9 +22,20 @@ export default ({image, onImageClick, onAddToCollection}) => {
     const [isLiked, setIsLiked] = useState(image.liked_by_user)
     const dispatch = useDispatch()
 
-    function getHeight(h, w) {
-        return (h / w) * 500
-    }
+    const openURL = useCallback(async () => {
+        let url = image.links.html
+        // Checking if the link is supported for links with custom URL scheme.
+        const supported = await Linking.canOpenURL(url)
+
+        if (supported) {
+            // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+            // by some browser in the mobile
+            await Linking.openURL(url)
+        } else {
+            // Alert.alert(`Don't know how to open this URL: ${url}`)
+            return
+        }
+    }, [image.links.html])
 
     const handleLikeChange = () => {
         setLikeLoading(true)
@@ -89,10 +102,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
                 style={s.imageContainer}>
                 <Image
                     source={{uri: image.urls.small}}
-                    style={[
-                        s.image,
-                        {height: getHeight(image.height, image.width)}
-                    ]}
+                    style={[s.image, {aspectRatio: image.width / image.height}]}
                 />
 
                 <MaterialCommunityIcons
@@ -133,7 +143,12 @@ export default ({image, onImageClick, onAddToCollection}) => {
                 </View>
 
                 <View style={s.grow} />
-                <MaterialCommunityIcons name="share" size={30} color="gray" />
+                <MaterialIcons
+                    onPress={openURL}
+                    name="open-in-browser"
+                    size={30}
+                    color="gray"
+                />
             </View>
         </View>
     )

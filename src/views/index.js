@@ -1,4 +1,5 @@
 export {default as AddToCollectionView} from './AddToCollectionView'
+export {default as AppKeysPage} from './AppKeysPage'
 export {default as BrowsePage} from './BrowsePage'
 export {default as CollectionPage} from './CollectionPage'
 export {default as ImageView} from './ImageView'

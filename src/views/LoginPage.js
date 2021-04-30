@@ -6,7 +6,7 @@ import authorize from '../api/authorize'
 import Layout from '../components/common/Layout'
 import {loginUser} from '../redux/actions/userActions'
 
-export default function LoginPage() {
+export default function LoginPage({route, navigation}) {
     const {colors} = useTheme()
     const dispatch = useDispatch()
     const handlePress = async () => {
@@ -25,14 +25,17 @@ export default function LoginPage() {
                         style={s.logo}
                         source={require('../assets/images/Unsplash_Symbol.png')}
                     />
-                    <Text style={[s.btnText, {color: '#000'}]}>
+                    <Text
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        style={[s.btnText, {color: '#000'}]}>
                         Login with Unsplash
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    onPress={() => navigation.navigate('App Keys')}
                     style={[s.btn, {backgroundColor: colors.text}]}>
                     <Text style={[s.btnText, {color: colors.background}]}>
-                        Continue without Account
+                        Set your app keys
                     </Text>
                 </TouchableOpacity>
             </View>
