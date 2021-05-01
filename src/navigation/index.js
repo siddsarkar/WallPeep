@@ -30,7 +30,7 @@ export default function RootNavigator() {
             setTimeout(() => {
                 dispatch(retrieveUser(() => setIsLoading(false), {accessToken}))
             }, 2000)
-        } else return
+        } else setIsLoading(false)
     }, [dispatch])
 
     useEffect(() => {
