@@ -1,8 +1,12 @@
-import {combineReducers} from 'redux'
-import collectionsReducer from './collectionsReducer'
-import userReducer from './userReducer'
+import {combineReducers} from 'redux';
+import collectionsReducer from './collectionsReducer';
+import imagesReducer from './imagesReducer';
+import searchReducer from './searchReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
-    user: userReducer,
-    collections: collectionsReducer
-})
+  user: userReducer,
+  images: imagesReducer,
+  collections: collectionsReducer,
+  search: searchReducer,
+});

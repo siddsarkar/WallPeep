@@ -1,12 +1,12 @@
 module.exports = {
-    root: true,
-    extends: ['@react-native-community', 'prettier'],
-    rules: {
-        'prettier/prettier': [
-            'error',
-            {
-                endOfLine: 'auto'
-            }
-        ]
-    }
-}
+  root: true,
+  extends: ['airbnb', '@react-native-community'],
+  rules: {
+    'react/jsx-filename-extension': [
+      1,
+      {
+        extensions: ['.js', '.jsx'],
+      },
+    ],
+  },
+};
