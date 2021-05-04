@@ -13,16 +13,30 @@ const AppStack = createStackNavigator();
 
 export default function AppNavigator() {
   return (
-    <AppStack.Navigator headerMode="none" mode="modal">
+    <AppStack.Navigator mode="modal">
       {/* Main Navigator */}
-      <AppStack.Screen name="Tab" component={TabNavigator} />
+      <AppStack.Screen
+        options={{headerShown: false}}
+        name="Tab"
+        component={TabNavigator}
+      />
 
       {/* Common Screens for main Navigator */}
       <AppStack.Screen
+        options={{headerShown: false}}
         name="AddToCollection"
         component={views.AddToCollectionView}
       />
-      <AppStack.Screen name="Modal" component={views.ImageView} />
+      <AppStack.Screen
+        options={{headerShown: false}}
+        name="Modal"
+        component={views.ImageView}
+      />
+      <AppStack.Screen
+        options={{headerShown: true}}
+        name="Collection Content"
+        component={views.CollectionContentPage}
+      />
     </AppStack.Navigator>
   );
 }
@@ -49,7 +63,7 @@ function TabNavigator() {
       })}
       tabBarOptions={{
         activeTintColor: colors.primary,
-        inactiveTintColor: 'gray',
+        inactiveTintColor: colors.textSecondary,
         tabStyle: {
           paddingVertical: 2,
         },
@@ -65,7 +79,7 @@ function TabNavigator() {
         },
       }}
       initialRouteName="Home">
-      <Tab.Screen name="Home" component={views.BrowsePage} />
+      <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Search" component={SearchStackScreen} />
       <Tab.Screen name="Collections" component={GalleryStackScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
@@ -78,6 +92,15 @@ function TabNavigator() {
  * STACKS FOR EACH TAB
  */
 
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Browse" component={views.BrowsePage} />
+    </HomeStack.Navigator>
+  );
+}
 const SearchStack = createStackNavigator();
 
 function SearchStackScreen() {
@@ -92,14 +115,10 @@ const GalleryStack = createStackNavigator();
 
 function GalleryStackScreen() {
   return (
-    <GalleryStack.Navigator mode="modal">
+    <GalleryStack.Navigator>
       <GalleryStack.Screen
         name="Collections"
         component={views.CollectionPage}
-      />
-      <GalleryStack.Screen
-        name="Collection Content"
-        component={views.CollectionContentPage}
       />
     </GalleryStack.Navigator>
   );

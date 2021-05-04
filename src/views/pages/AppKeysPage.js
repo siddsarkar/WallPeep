@@ -22,17 +22,20 @@ export default function AppKeysPage({navigation}) {
 
   return (
     <Layout>
-      <Text style={[s.label, {backgroundColor: colors.card}]}>Access Key</Text>
+      <Text
+        style={[s.label, {color: colors.text, backgroundColor: colors.card}]}>
+        Access Key
+      </Text>
       <View style={[s.searchBar, {backgroundColor: colors.card}]}>
         <TextInput
           value={keys.accessKey}
           onChangeText={(q) => setKeys({...keys, accessKey: q})}
-          placeholderTextColor={colors.placeholder}
+          placeholderTextColor={colors.textPlaceholder}
           style={[
             s.textField,
             {
-              color: colors.text,
-              backgroundColor: colors.inputbackground,
+              color: colors.textPlaceholder,
+              backgroundColor: colors.inputBackground,
             },
           ]}
           placeholder="your access key here"
@@ -40,30 +43,38 @@ export default function AppKeysPage({navigation}) {
         <MaterialCommunityIcons
           name="key"
           size={26}
-          color={colors.placeholder}
+          color={colors.textPlaceholder}
           style={s.searchIcon}
         />
-        {!!keys.secretKey && (
+        {!!keys.accessKey && (
           <MaterialCommunityIcons
             name="close-circle"
             size={26}
-            color={colors.placeholder}
+            color={colors.textPlaceholder}
             style={s.clearIcon}
             onPress={() => setKeys({...keys, accessKey: ''})}
           />
         )}
       </View>
-      <Text style={[s.label, {backgroundColor: colors.card}]}>Secret key</Text>
-      <View style={[s.searchBar, {backgroundColor: colors.card}]}>
+      <Text
+        style={[s.label, {color: colors.text, backgroundColor: colors.card}]}>
+        Secret key
+      </Text>
+      <View
+        style={[
+          s.searchBar,
+          // eslint-disable-next-line react-native/no-inline-styles
+          {backgroundColor: colors.card, paddingBottom: 24},
+        ]}>
         <TextInput
           value={keys.secretKey}
           onChangeText={(q) => setKeys({...keys, secretKey: q})}
-          placeholderTextColor={colors.placeholder}
+          placeholderTextColor={colors.textPlaceholder}
           style={[
             s.textField,
             {
               color: colors.text,
-              backgroundColor: colors.inputbackground,
+              backgroundColor: colors.inputBackground,
             },
           ]}
           placeholder="your secret key here"
@@ -71,14 +82,14 @@ export default function AppKeysPage({navigation}) {
         <MaterialCommunityIcons
           name="key"
           size={26}
-          color={colors.placeholder}
+          color={colors.textPlaceholder}
           style={s.searchIcon}
         />
         {!!keys.secretKey && (
           <MaterialCommunityIcons
             name="close-circle"
             size={26}
-            color={colors.placeholder}
+            color={colors.textPlaceholder}
             style={s.clearIcon}
             onPress={() => setKeys({...keys, secretKey: ''})}
           />
@@ -86,6 +97,7 @@ export default function AppKeysPage({navigation}) {
       </View>
       <View style={[s.searchBar, {backgroundColor: colors.card}]}>
         <Button
+          color={colors.primary}
           onPress={handleContinue}
           disabled={!(keys.accessKey && keys.secretKey)}
           style={s.btn}
@@ -143,5 +155,7 @@ const s = StyleSheet.create({
   },
   btn: {
     paddingVertical: 18,
+    height: 55,
+    borderRadius: 6,
   },
 });

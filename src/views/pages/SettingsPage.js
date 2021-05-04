@@ -71,9 +71,9 @@ export default function SettingsPage() {
               <Switch
                 trackColor={{
                   false: '#767577',
-                  true: colors.primary,
+                  true: colors.textSecondary,
                 }}
-                thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+                thumbColor={isEnabled ? colors.primary : '#f4f3f4'}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
                 value={isEnabled}

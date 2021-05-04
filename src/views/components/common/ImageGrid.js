@@ -44,7 +44,9 @@ export default function ImageGrid({
       }
     }
     return row.map((col, i) => (
-      <View key={i} style={[s.column, {maxWidth: `${100 / _cols}%`}]}>
+      <View
+        key={i.toString()}
+        style={[s.column, {maxWidth: `${100 / _cols}%`}]}>
         {col.map((image) => (
           <Pressable key={image.id} onPress={() => imageOnPress(image)}>
             <Image
@@ -62,6 +64,7 @@ export default function ImageGrid({
     ));
   };
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <ScrollView contentContainerStyle={s.row} {...rest}>
       {renderColumns()}
     </ScrollView>

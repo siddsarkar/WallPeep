@@ -2,61 +2,40 @@ import api from '../../services/api';
 import AsyncStore from '../../utils/asyncStore';
 import * as types from '../types';
 
-export function retrieveUser({accessToken}, cb) {
-  return (dispatch, getState) => {
-    if (accessToken) {
-      dispatch({
-        type: types.USER_RETRIEVED,
-        isLoggedIn: true,
-        accessToken,
-      });
-    } else {
-      dispatch({
-        type: types.USER_RETRIEVED,
-        isLoggedIn: false,
-      });
-    }
-    cb();
-  };
-}
-
-export function fetchUser(cb) {
-  return (dispatch, getState) => {
-    api.getUserInfo(getState().user.accessToken).then((info) => {
-      dispatch({
-        type: types.GOT_USER_INFO,
-        info,
-      });
-
-      cb();
+export const retrieveUser = ({accessToken}) => (dispatch, getState) => {
+  if (accessToken) {
+    dispatch({
+      type: types.USER_RETRIEVED,
+      isLoggedIn: true,
+      accessToken,
     });
-  };
-}
+  } else {
+    dispatch({
+      type: types.USER_RETRIEVED,
+      isLoggedIn: false,
+    });
+  }
+};
 
-export function loginUser(accessToken) {
-  return (dispatch, getState) => {
-    console.log(accessToken);
-    async function setToken() {
-      await AsyncStore.setItem('access_token', accessToken);
-      dispatch({
-        type: types.USER_LOGGED_IN,
-        accessToken,
-      });
-    }
+export const fetchUser = () => (dispatch, getState) =>
+  api.getUserInfo(getState().user.accessToken).then((info) => {
+    dispatch({
+      type: types.GOT_USER_INFO,
+      info,
+    });
+  });
 
-    setToken();
-  };
-}
+export const loginUser = (accessToken) => (dispatch, getState) => {
+  AsyncStore.setItem('access_token', accessToken).then(() => {
+    dispatch({
+      type: types.USER_LOGGED_IN,
+      accessToken,
+    });
+  });
+};
 
-export function logoutUser() {
-  return (dispatch, getState) => {
-    console.log(getState());
-
-    async function removeToken() {
-      await AsyncStore.removeItem('access_token');
-      dispatch({type: types.USER_LOGGED_OUT});
-    }
-
-    removeToken();
-  };
-}
+export const logoutUser = () => (dispatch, getState) => {
+  AsyncStore.removeItem('access_token').then(() => {
+    dispatch({type: types.USER_LOGGED_OUT});
+  });
+};

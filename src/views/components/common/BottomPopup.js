@@ -43,7 +43,7 @@ const BottomPopup = ({modalVisible, toggleModal, urls}) => {
         style={[styles.tint, {backgroundColor: colors.text}]}
       />
       <View style={styles.centeredView}>
-        <View style={[styles.modalView, {backgroundColor: colors.cardheader}]}>
+        <View style={[styles.modalView, {backgroundColor: colors.cardHeader}]}>
           <Pressable onPress={setWallpaper} style={styles.itemWrapper}>
             <Text style={[styles.modalText, {color: colors.text}]}>
               Set as Wallpaper...

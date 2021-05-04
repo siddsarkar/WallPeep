@@ -14,7 +14,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
 import {togglePhotoLike} from '../../../redux/actions/imageActions';
 import Avatar from '../ui/Avatar';
-import Icon from '../ui/Icon';
 import BottomPopup from './BottomPopup';
 
 export default ({image, onImageClick, onAddToCollection}) => {
@@ -60,7 +59,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
       style={[
         s.root,
         {
-          backgroundColor: colors.cardheader,
+          backgroundColor: colors.cardHeader,
           color: colors.text,
         },
       ]}>
@@ -68,7 +67,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
         style={[
           s.header,
           {
-            backgroundColor: colors.cardheader,
+            backgroundColor: colors.cardHeader,
           },
         ]}>
         <View style={s.iconContainer}>
@@ -84,12 +83,16 @@ export default ({image, onImageClick, onAddToCollection}) => {
             ]}>
             {image.user.name}
           </Text>
-          <Text style={s.textSeecondary}>
+          <Text style={[s.textSeecondary, {color: colors.textSecondary}]}>
             {`${isLiked ? image.likes + 1 : image.likes} likes`}
           </Text>
         </View>
         <View style={s.iconContainer}>
-          <Icon />
+          <MaterialCommunityIcons
+            name="dots-vertical"
+            size={30}
+            color={colors.textSecondary}
+          />
         </View>
       </View>
       <Pressable
@@ -106,7 +109,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
           style={s.expandIcon}
           name="crop-free"
           size={30}
-          color={colors.card}
+          color={colors.textSecondary}
           onPress={() => setModalVisible(!modalVisible)}
         />
       </Pressable>
@@ -120,7 +123,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
               name="heart"
               size={30}
               onPress={handleLikeChange}
-              color={isLiked ? colors.primary : 'gray'}
+              color={isLiked ? colors.primary : colors.textSecondary}
             />
           )}
           <MaterialCommunityIcons
@@ -131,7 +134,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
             color={
               image.current_user_collections.length > 0
                 ? colors.primary
-                : 'gray'
+                : colors.textSecondary
             }
           />
         </View>
@@ -141,7 +144,7 @@ export default ({image, onImageClick, onAddToCollection}) => {
           onPress={openURL}
           name="open-in-browser"
           size={30}
-          color="gray"
+          color={colors.textSecondary}
         />
       </View>
       <BottomPopup

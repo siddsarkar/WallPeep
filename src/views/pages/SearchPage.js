@@ -23,24 +23,17 @@ export default function SearchPage({navigation}) {
 
   const fetchMore = () => {
     setmoreLoading(true);
-    moreLoading &&
-      more()
-        .then(() => console.log('fetch'))
-        .catch((e) => console.error(e))
-        .finally(() => setmoreLoading(false));
-
-    function more() {
-      return new Promise((resolve, reject) => {
-        dispatch(
-          fetchSearch({
-            query,
-            page: page + 1,
-            per_page: 30,
-            search_type: 'photos',
-          }),
-        ).then(() => resolve());
-      });
-    }
+    dispatch(
+      fetchSearch({
+        query,
+        page: page + 1,
+        per_page: 30,
+        search_type: 'photos',
+      }),
+    )
+      .then(() => console.log('success', page + 1, '/', data.total_pages))
+      .catch((e) => console.log('error'))
+      .finally(() => setmoreLoading(false));
   };
 
   const fetchQuery = () => {
@@ -51,11 +44,13 @@ export default function SearchPage({navigation}) {
       .finally(() => setLoading(false));
   };
 
-  function isCloseToBottom({layoutMeasurement, contentOffset, contentSize}) {
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
     return (
-      layoutMeasurement.height + contentOffset.y >= contentSize.height - 10
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
     );
-  }
+  };
 
   return (
     <Layout>
@@ -65,12 +60,12 @@ export default function SearchPage({navigation}) {
           onSubmitEditing={fetchQuery}
           value={query}
           onChangeText={(q) => setQuery(q)}
-          placeholderTextColor={colors.placeholder}
+          placeholderTextColor={colors.textPlaceholder}
           style={[
             s.textField,
             {
-              color: colors.text,
-              backgroundColor: colors.inputbackground,
+              color: colors.background,
+              backgroundColor: colors.inputBackground,
             },
           ]}
           placeholder="Write something to search"
@@ -78,7 +73,7 @@ export default function SearchPage({navigation}) {
         <MaterialIcons
           name="search"
           size={28}
-          color={colors.text}
+          color={colors.textPlaceholder}
           style={s.searchIcon}
         />
       </View>
@@ -98,14 +93,14 @@ export default function SearchPage({navigation}) {
         </View>
       ) : (
         <>
-          {data.results.length > 1 && (
-            <Text style={{color: colors.text}}>
-              {data.total}&nbsp;results found
-            </Text>
-          )}
-          {moreLoading && <Text style={{color: colors.text}}>more</Text>}
-
+          {moreLoading && <Text>more</Text>}
           <ImageGrid
+            onScroll={({nativeEvent}) => {
+              if (isCloseToBottom(nativeEvent)) {
+                !moreLoading && page + 1 <= data.total_pages && fetchMore();
+              }
+            }}
+            scrollEventThrottle={400}
             images={data.results}
             columns={2}
             imageOnPress={(image) => {

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useTheme} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
@@ -12,56 +12,105 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
+import {fetchUserCollections} from '../../../redux/actions/collectionAction';
 import {fetchUser} from '../../../redux/actions/userActions';
+import CollectionCard from '../../components/common/CollectionCard';
 import Layout from '../../components/common/Layout';
 import ProfileTabBar from '../../components/common/ProfileTabBar';
 import Avatar from '../../components/ui/Avatar';
 
-function sc() {
+function CollectionsTab({navigation}) {
+  const {colors} = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
+  const {userCollections} = useSelector((state) => state.collections);
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(fetchUserCollections()).then(() => setRefreshing(false));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchUserCollections()).then(() => setIsLoading(false));
+  }, [dispatch]);
+
   return (
-    <View
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        flex: 1,
-        backgroundColor: 'red',
-      }}>
-      <Text>jjj</Text>
-    </View>
+    <Layout>
+      {isLoading ? (
+        <View style={s.loader}>
+          <ActivityIndicator color={colors.text} size="large" />
+          <Text
+            style={[
+              s.text,
+              {
+                color: colors.text,
+              },
+            ]}>
+            Loading your Collections...
+          </Text>
+        </View>
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={{paddingTop: 12, alignItems: 'center'}}>
+          {userCollections.map((collection) => (
+            <CollectionCard
+              collection={collection}
+              colors={colors}
+              onPress={() =>
+                navigation.navigate({
+                  name: 'Collection Content',
+                  params: {collection},
+                })
+              }
+              key={collection.id}
+            />
+          ))}
+        </ScrollView>
+      )}
+    </Layout>
   );
 }
-function scx() {
+function PhotosTab() {
+  const {colors} = useTheme();
   return (
     <View
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         flex: 1,
-        backgroundColor: 'blue',
+        height: 500,
+        backgroundColor: colors.background,
       }}
     />
   );
 }
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
+
 function TopTabNavigator() {
   const {colors} = useTheme();
   return (
     <Tab.Navigator
+      // eslint-disable-next-line react/jsx-props-no-spreading
       tabBar={(props) => <ProfileTabBar colors={colors} {...props} />}>
-      <Tab.Screen
-        options={{tabBarIcon: 'image-multiple'}}
-        name="Photos"
-        component={sc}
-      />
       <Tab.Screen
         options={{tabBarIcon: 'view-grid'}}
         name="Collections"
-        component={scx}
+        component={CollectionsTab}
+      />
+      <Tab.Screen
+        options={{tabBarIcon: 'image-multiple'}}
+        name="Photos"
+        component={PhotosTab}
       />
     </Tab.Navigator>
   );
 }
 
 export default function ProfilePage() {
+  const dispatch = useDispatch();
   const {colors} = useTheme();
   const user = useSelector((state) => state.user.info);
 
@@ -69,12 +118,11 @@ export default function ProfilePage() {
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(() => {
-    dispatch(fetchUser(() => setRefreshing(false)));
+    dispatch(fetchUser()).then(() => setRefreshing(false));
   }, [dispatch]);
-  let dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUser(() => setIsloading(false)));
+    dispatch(fetchUser()).then(() => setIsloading(false));
   }, [dispatch]);
 
   return (
@@ -84,63 +132,8 @@ export default function ProfilePage() {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-          <View style={[s.headerWrapper, {backgroundColor: colors.card}]}>
-            <Avatar image={user.profile_image.large} size={110} name="JD" />
-
-            <Text
-              style={[
-                s.text,
-                {
-                  color: colors.text,
-                },
-              ]}>
-              {user.name}
-            </Text>
-            <View style={s.iconText}>
-              <MaterialCommunityIcons
-                style={s.metaIcons}
-                color={colors.placeholder}
-                name="map-marker"
-                size={18}
-              />
-              <Text
-                style={[
-                  s.subText,
-                  {
-                    color: colors.placeholder,
-                  },
-                ]}>
-                {user.location}
-              </Text>
-            </View>
-            <View style={s.iconText}>
-              <MaterialCommunityIcons
-                style={s.metaIcons}
-                color={colors.placeholder}
-                name="link-variant"
-                size={18}
-              />
-              <Text
-                style={[
-                  s.subText,
-                  {
-                    color: colors.placeholder,
-                  },
-                ]}>
-                {user.portfolio_url}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              // flexGrow: 1,
-              position: 'relative',
-              width: '100%',
-              minHeight: 500,
-              paddingTop: 50,
-            }}>
-            <TopTabNavigator />
-          </View>
+          <Header colors={colors} user={user} />
+          <TopTabNavigator />
         </ScrollView>
       ) : (
         <View
@@ -153,6 +146,58 @@ export default function ProfilePage() {
         </View>
       )}
     </Layout>
+  );
+}
+
+function Header({colors, user}) {
+  return (
+    <View style={[s.headerWrapper, {backgroundColor: colors.card}]}>
+      <Avatar image={user.profile_image.large} size={110} name="JD" />
+
+      <Text
+        style={[
+          s.text,
+          {
+            color: colors.text,
+          },
+        ]}>
+        {user.name}
+      </Text>
+      <View style={s.iconText}>
+        <MaterialCommunityIcons
+          style={s.metaIcons}
+          color={colors.textSecondary}
+          name="map-marker"
+          size={18}
+        />
+        <Text
+          style={[
+            s.subText,
+            {
+              color: colors.textSecondary,
+            },
+          ]}>
+          {user.location}
+        </Text>
+      </View>
+      <View style={s.iconText}>
+        <MaterialCommunityIcons
+          style={s.metaIcons}
+          color={colors.textSecondary}
+          name="link-variant"
+          size={18}
+        />
+        <Text
+          style={[
+            s.subText,
+            {
+              color: colors.textSecondary,
+            },
+          ]}>
+          {user.portfolio_url}
+        </Text>
+      </View>
+    </View>
   );
 }
 

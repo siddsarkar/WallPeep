@@ -2,7 +2,6 @@ import {useTheme} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Image,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -11,9 +10,10 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchUserCollections} from '../../redux/actions/collectionAction';
+import CollectionCard from '../components/common/CollectionCard';
 import Layout from '../components/common/Layout';
 
-export default function AddToCollectionView() {
+export default function AddToCollectionView({navigation}) {
   const {colors} = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const {userCollections} = useSelector((state) => state.collections);
@@ -22,11 +22,11 @@ export default function AddToCollectionView() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchUserCollections(() => setRefreshing(false)));
+    dispatch(fetchUserCollections()).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchUserCollections(() => setIsLoading(false)));
+    dispatch(fetchUserCollections()).then(() => setIsLoading(false));
   }, [dispatch]);
 
   return (
@@ -51,28 +51,17 @@ export default function AddToCollectionView() {
           }
           contentContainerStyle={s.root}>
           {userCollections.map((collection) => (
-            <View style={s.cardContainer} key={collection.id}>
-              <Image
-                style={s.coverImage}
-                source={{
-                  uri: collection.cover_photo.urls.small,
-                }}
-              />
-              <View
-                style={[
-                  s.tint,
-                  {
-                    backgroundColor: colors.text,
-                  },
-                ]}
-              />
-              <Text style={[s.title, {color: colors.cardheader}]}>
-                {collection.title}
-              </Text>
-              <Text style={[s.subTitle, {color: colors.background}]}>
-                {collection.total_photos}&nbsp;photos
-              </Text>
-            </View>
+            <CollectionCard
+              collection={collection}
+              colors={colors}
+              // onPress={() =>
+              //   navigation.navigate({
+              //     name: 'Collection Content',
+              //     params: {collection},
+              //   })
+              // }
+              key={collection.id}
+            />
           ))}
           <View style={s.cardContainer}>
             <View style={s.coverImage} />
@@ -80,11 +69,11 @@ export default function AddToCollectionView() {
               style={[
                 s.tint,
                 {
-                  backgroundColor: colors.text,
+                  backgroundColor: colors.cardHeader,
                 },
               ]}
             />
-            <Text style={[s.title, {color: colors.cardheader}]}>
+            <Text style={[s.title, {color: colors.textSecondary}]}>
               Create New Collection
             </Text>
           </View>
@@ -101,6 +90,7 @@ const s = StyleSheet.create({
     height: '100%',
   },
   root: {
+    paddingVertical: 12,
     alignItems: 'center',
     // height: '100%'
   },
@@ -145,37 +135,9 @@ const s = StyleSheet.create({
   },
   tint: {
     position: 'absolute',
+
     height: '100%',
     width: '100%',
-    opacity: 0.3,
+    opacity: 0.5,
   },
 });
-
-// const AddToCollectionView = ({route}) => {
-//     const {colors} = useTheme()
-//     return (
-//         <Layout>
-//             <View style={[s.root, {backgroundColor: colors.background}]}>
-//                 <Text style={{color: colors.text}}>
-//                     {route.params.photo_id}
-//                 </Text>
-//             </View>
-//         </Layout>
-//     )
-// }
-
-// export default AddToCollectionView
-
-// const s = StyleSheet.create({
-//     root: {
-//         height: '100%',
-//         width: '100%',
-//         position: 'relative',
-//         justifyContent: 'center',
-//         alignItems: 'center'
-//     },
-//     image: {
-//         width: '100%',
-//         height: 500
-//     }
-// })

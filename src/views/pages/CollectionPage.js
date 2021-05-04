@@ -2,8 +2,6 @@ import {useTheme} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Image,
-  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -12,6 +10,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCollections} from '../../redux/actions/collectionAction';
+import CollectionCard from '../components/common/CollectionCard';
 import Layout from '../components/common/Layout';
 
 export default function CollectionPage({navigation}) {
@@ -23,11 +22,11 @@ export default function CollectionPage({navigation}) {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchCollections(() => setRefreshing(false)));
+    dispatch(fetchCollections()).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchCollections(() => setIsLoading(false)));
+    dispatch(fetchCollections()).then(() => setIsLoading(false));
   }, [dispatch]);
 
   return (
@@ -52,36 +51,17 @@ export default function CollectionPage({navigation}) {
           }
           contentContainerStyle={s.root}>
           {collections.map((collection) => (
-            <Pressable
+            <CollectionCard
+              collection={collection}
+              colors={colors}
               onPress={() =>
                 navigation.navigate({
                   name: 'Collection Content',
                   params: {collection},
                 })
               }
-              style={s.cardContainer}
-              key={collection.id}>
-              <Image
-                style={s.coverImage}
-                source={{
-                  uri: collection.cover_photo.urls.small,
-                }}
-              />
-              <View
-                style={[
-                  s.tint,
-                  {
-                    backgroundColor: colors.text,
-                  },
-                ]}
-              />
-              <Text style={[s.title, {color: colors.cardheader}]}>
-                {collection.title}
-              </Text>
-              <Text style={[s.subTitle, {color: colors.background}]}>
-                {collection.total_photos}&nbsp;photos
-              </Text>
-            </Pressable>
+              key={collection.id}
+            />
           ))}
         </ScrollView>
       )}
@@ -96,6 +76,7 @@ const s = StyleSheet.create({
     height: '100%',
   },
   root: {
+    paddingTop: 12,
     alignItems: 'center',
     // height: '100%'
   },

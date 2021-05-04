@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   RefreshControl,
   StyleSheet,
   Text,
@@ -15,10 +16,6 @@ import Layout from '../components/common/Layout';
 export default function BrowsePage({navigation}) {
   const {colors} = useTheme();
   const [json, setJson] = useState([]);
-  const [
-    onEndReachedCalledDuringMomentum,
-    setOnEndReachedCalledDuringMomentum,
-  ] = useState(false);
 
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,18 +26,16 @@ export default function BrowsePage({navigation}) {
   useScrollToTop(ref);
 
   useEffect(() => {
-    setIsLoading(true);
     fetch(
       'https://api.unsplash.com/photos?client_id=ESrWTdP2IRHxaRjjHlf5pnW0JxCmeqxGzhEZlzZmDAA&page=1&per_page=10',
     )
       .then((response) => {
-        console.log(response.headers.map['x-ratelimit-remaining']);
-        if (response.headers.map['x-ratelimit-remaining'] === 0) {
-          setHasError(true);
-        } else return response.json();
+        if (response.ok) {
+          return response.json();
+        } else return null;
       })
       .then((data) => setJson(data))
-      .catch((error) => console.log(error))
+      .catch((error) => setHasError(true))
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -77,13 +72,19 @@ export default function BrowsePage({navigation}) {
     setPage(page + 1);
     setMoreLoading(true);
     const res = await fetch(
-      `https://api.unsplash.com/photos?client_id=ESrWTdP2IRHxaRjjHlf5pnW0JxCmeqxGzhEZlzZmDAA&page=${page}&per_page=10`,
+      `https://api.unsplash.com/photos?client_id=ESrWTdP2IRHxaRjjHlf5pnW0JxCmeqxGzhEZlzZmDAA&page=${
+        page + 1
+      }&per_page=10`,
     );
 
-    const data = await res.json();
-    console.log(page);
-    console.log(res.headers.map['x-ratelimit-remaining']);
-    setJson([...json, ...data]);
+    if (res.headers.map['x-ratelimit-remaining'] === 0) {
+      setHasError(true);
+    } else {
+      const data = await res.json();
+      console.log(page + 1);
+      console.log(res.headers.map['x-ratelimit-remaining']);
+      setJson([...json, ...data]);
+    }
     setMoreLoading(false);
   };
 
@@ -99,7 +100,7 @@ export default function BrowsePage({navigation}) {
                 color: colors.text,
               },
             ]}>
-            Loading...55
+            Loading...
           </Text>
         </View>
       ) : (
@@ -119,19 +120,20 @@ export default function BrowsePage({navigation}) {
               />
             </View>
           )}
-          // onEndReached={handleLoadMore}
+          ListEmptyComponent={() =>
+            hasError && (
+              <View style={s.loader}>
+                <Image
+                  style={{height: 250, width: 250}}
+                  source={require('../../assets/images/rate-limit.png')}
+                />
+              </View>
+            )
+          }
+          onEndReached={() => !moreLoading && handleLoadMore()}
           onEndReachedThreshold={0.1}
           scrollEnabled={!isLoading}
           initialNumToRender={10}
-          onMomentumScrollBegin={() => {
-            setOnEndReachedCalledDuringMomentum(false);
-          }}
-          onEndReached={() => {
-            if (!onEndReachedCalledDuringMomentum) {
-              handleLoadMore(); // LOAD MORE DATA
-              setOnEndReachedCalledDuringMomentum(true);
-            }
-          }}
           ListFooterComponent={() => {
             if (!moreLoading) return null;
 

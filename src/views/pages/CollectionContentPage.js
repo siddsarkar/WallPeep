@@ -8,40 +8,40 @@ import {
   Text,
   View,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchPhotoCollection} from '../../redux/actions/collectionAction';
 import Card from '../components/common/Card';
 import Layout from '../components/common/Layout';
 
 export default function CollectionContentPage({navigation, route}) {
   const {colors} = useTheme();
-  const [json, setJson] = useState([]);
+  const {collection} = useSelector((state) => state.collections);
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const ref = useRef(null);
   useScrollToTop(ref);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(fetchPhotoCollection(route.params.collection.id)).then(() =>
+      setRefreshing(false),
+    );
+  }, [dispatch, route.params.collection.id]);
+
   useEffect(() => {
     navigation.setOptions({title: route.params.collection.title});
     setIsLoading(true);
-    fetch(
-      `https://api.unsplash.com/collections/${route.params.collection.id}/photos?client_id=05Z6iFwVrlK6_i8d4TkaN4k2c27h1etfTRFUtRHk82c`,
-    )
-      .then((response) => response.json())
-      .then((data) => setJson(data))
-      .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
-  }, [route.params.collection.title, route.params.collection.id, navigation]);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    fetch(
-      `https://api.unsplash.com/collections/${route.params.collection.id}/photos?client_id=05Z6iFwVrlK6_i8d4TkaN4k2c27h1etfTRFUtRHk82c`,
-    )
-      .then((response) => response.json())
-      .then((data) => setJson(data))
-      .catch((error) => console.error(error))
-      .finally(() => setRefreshing(false));
-  }, [route.params.collection.id]);
+    dispatch(fetchPhotoCollection(route.params.collection.id)).then(() =>
+      setIsLoading(false),
+    );
+  }, [
+    dispatch,
+    navigation,
+    route.params.collection.title,
+    route.params.collection.id,
+  ]);
 
   const handleImage = (url, height, width) => {
     navigation.navigate({
@@ -78,7 +78,7 @@ export default function CollectionContentPage({navigation, route}) {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           contentContainerStyle={s.root}>
-          {json.map((image) => (
+          {collection.data.map((image) => (
             <View style={s.cardContainer} key={image.id}>
               <Card
                 onAddToCollection={handleAddToCollection}

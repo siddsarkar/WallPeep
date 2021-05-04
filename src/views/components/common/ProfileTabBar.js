@@ -1,18 +1,15 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
+import Animated from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ProfileTabBar({
-  colors,
   state,
   descriptors,
   navigation,
+  position,
+  colors,
 }) {
-  const focusedOptions = descriptors[state.routes[state.index].key].options;
-
-  if (focusedOptions.tabBarVisible === false) {
-    return null;
-  }
   return (
     <View style={[s.tabBar, {backgroundColor: colors.card}]}>
       {state.routes.map((route, index) => {
@@ -23,6 +20,7 @@ export default function ProfileTabBar({
             : options.title !== undefined
             ? options.title
             : route.name;
+
         const icon =
           options.tabBarIcon !== undefined
             ? options.tabBarIcon
@@ -49,39 +47,52 @@ export default function ProfileTabBar({
           });
         };
 
+        const inputRange = state.routes.map((_, i) => i);
+        const opacity = Animated.interpolateNode(position, {
+          inputRange,
+          outputRange: inputRange.map((i) => (i === index ? 1 : 0.4)),
+        });
+        const backgroundOpacity = Animated.interpolateNode(position, {
+          inputRange,
+          outputRange: inputRange.map((i) => (i === index ? 1 : 0)),
+        });
+
         return (
           <Pressable
-            key={index}
+            key={index.toString()}
             accessibilityRole="button"
             accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={[
-              s.iconText,
-              s.tab,
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                backgroundColor: isFocused ? colors.placeholder : colors.card,
-                borderRadius: isFocused ? 4 : 0,
-              },
-            ]}>
-            <MaterialCommunityIcons
-              style={s.metaIcons}
-              color={colors.text}
-              name={icon}
-              size={18}
+            style={[s.iconText, s.tab]}>
+            <Animated.View
+              style={[
+                s.tabBackground,
+                {
+                  backgroundColor: colors.cardHeader,
+                  opacity: backgroundOpacity,
+                },
+              ]}
             />
-            <Text
+            <Animated.View style={[s.metaIcons, {opacity}]}>
+              <MaterialCommunityIcons
+                color={colors.text}
+                name={icon}
+                size={18}
+              />
+            </Animated.View>
+            <Animated.Text
               style={[
                 s.tabsText,
                 {
+                  opacity,
                   color: colors.text,
                 },
               ]}>
               {label}
-            </Text>
+            </Animated.Text>
           </Pressable>
         );
       })}
@@ -90,6 +101,13 @@ export default function ProfileTabBar({
 }
 
 const s = StyleSheet.create({
+  tabBackground: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+
+    borderRadius: 4,
+  },
   iconText: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -98,9 +116,9 @@ const s = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'absolute',
+    // position: 'absolute',
     padding: 8,
-    // backgroundColor: 'green'
+    backgroundColor: 'green',
   },
   root: {
     height: '100%',
@@ -124,7 +142,9 @@ const s = StyleSheet.create({
   },
   tab: {
     justifyContent: 'center',
-    padding: 6,
+    height: 40,
+
+    // padding: 6,
   },
   tabsText: {
     fontSize: 18,

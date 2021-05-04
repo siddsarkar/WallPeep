@@ -38,9 +38,8 @@ export default function RootNavigator() {
         if (appKeys.verified) {
           const accessToken = await AsyncStore.getItem('access_token');
 
-          dispatch(
-            retrieveUser({accessToken}, () => setAsyncStoreLoading(false)), // This will update isLoggedIn to true
-          );
+          await dispatch(retrieveUser({accessToken})); // This will update isLoggedIn to true
+          setAsyncStoreLoading(false);
         } else {
           setAsyncStoreLoading(false);
         }
