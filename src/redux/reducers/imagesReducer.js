@@ -2,7 +2,7 @@ import * as types from '../types';
 
 const initialState = {
   photos: [],
-  error: [],
+  error: null,
   page: 1,
   per_page: 10,
   order_by: 'latest',
@@ -17,6 +17,7 @@ const reducer = (state = initialState, action) => {
         page: action.page,
         per_page: action.per_page,
         order_by: action.order_by,
+        error: null,
       };
     case types.GOT_MORE_PHOTOS:
       return {
@@ -25,6 +26,7 @@ const reducer = (state = initialState, action) => {
         page: action.page,
         per_page: action.per_page,
         order_by: action.order_by,
+        error: null,
       };
     case types.GOT_PHOTOS_ERROR:
       return {

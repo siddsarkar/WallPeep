@@ -51,7 +51,10 @@ export default ({image, onImageClick, onAddToCollection}) => {
   };
 
   const handleAddToCollection = () => {
-    onAddToCollection(image.id);
+    onAddToCollection({
+      photo_id: image.id,
+      current_user_collections: image.current_user_collections,
+    });
   };
 
   return (

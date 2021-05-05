@@ -2,18 +2,22 @@ import api from '../../services/api';
 import * as types from '../types';
 
 export const fetchPhotoCollection = (id) => (dispatch, getState) =>
-  api.getCollection(getState().user.accessToken, {id}).then((collection) => {
+  api.getCollection(getState().user.accessToken, {id}).then(({json, rate}) => {
     dispatch({
       type: types.GOT_A_COLLECTION,
-      data: collection,
+      data: json,
+
+      rate,
     });
   });
 
 export const fetchCollections = () => (dispatch, getState) =>
-  api.getCollections(getState().user.accessToken).then((collections) => {
+  api.getCollections(getState().user.accessToken).then(({json, rate}) => {
     dispatch({
       type: types.GOT_PUBLIC_COLLECTIONS_LIST,
-      collections,
+      collections: json,
+
+      rate,
     });
   });
 
@@ -22,9 +26,11 @@ export const fetchUserCollections = () => (dispatch, getState) =>
     .getUserCollections(getState().user.accessToken, {
       username: 'siddsarkar',
     })
-    .then((userCollections) => {
+    .then(({json, rate}) => {
       dispatch({
         type: types.GOT_USER_COLLECTIONS_LIST,
-        userCollections,
+        userCollections: json,
+
+        rate,
       });
     });

@@ -12,80 +12,12 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchUserCollections} from '../../../redux/actions/collectionAction';
 import {fetchUser} from '../../../redux/actions/userActions';
-import CollectionCard from '../../components/common/CollectionCard';
 import Layout from '../../components/common/Layout';
 import ProfileTabBar from '../../components/common/ProfileTabBar';
 import Avatar from '../../components/ui/Avatar';
-
-function CollectionsTab({navigation}) {
-  const {colors} = useTheme();
-  const [isLoading, setIsLoading] = useState(true);
-  const {userCollections} = useSelector((state) => state.collections);
-  const dispatch = useDispatch();
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    dispatch(fetchUserCollections()).then(() => setRefreshing(false));
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchUserCollections()).then(() => setIsLoading(false));
-  }, [dispatch]);
-
-  return (
-    <Layout>
-      {isLoading ? (
-        <View style={s.loader}>
-          <ActivityIndicator color={colors.text} size="large" />
-          <Text
-            style={[
-              s.text,
-              {
-                color: colors.text,
-              },
-            ]}>
-            Loading your Collections...
-          </Text>
-        </View>
-      ) : (
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          contentContainerStyle={{paddingTop: 12, alignItems: 'center'}}>
-          {userCollections.map((collection) => (
-            <CollectionCard
-              collection={collection}
-              colors={colors}
-              onPress={() =>
-                navigation.navigate({
-                  name: 'Collection Content',
-                  params: {collection},
-                })
-              }
-              key={collection.id}
-            />
-          ))}
-        </ScrollView>
-      )}
-    </Layout>
-  );
-}
-function PhotosTab() {
-  const {colors} = useTheme();
-  return (
-    <View
-      style={{
-        flex: 1,
-        height: 500,
-        backgroundColor: colors.background,
-      }}
-    />
-  );
-}
+import CollectionsTab from './Tabs/CollectionsTab';
+import PhotosTab from './Tabs/PhotosTab';
 
 const Tab = createMaterialTopTabNavigator();
 

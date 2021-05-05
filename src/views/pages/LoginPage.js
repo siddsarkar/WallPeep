@@ -3,10 +3,10 @@ import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {
   Image,
-  Pressable,
   StyleSheet,
   Text,
   ToastAndroid,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
@@ -37,11 +37,13 @@ export default function LoginPage({route, navigation}) {
   return (
     <Layout>
       <View style={s.root}>
-        <Image
-          style={s.image}
-          source={require('../../assets/images/crayon-image-settings.png')}
-        />
-        <Pressable
+        <View style={s.imageWrapper}>
+          <Image
+            style={s.image}
+            source={require('../../assets/images/crayon-image-settings.png')}
+          />
+        </View>
+        <TouchableOpacity
           onPress={handlePress}
           style={[s.btn, {backgroundColor: colors.text}]}>
           <Image
@@ -53,14 +55,14 @@ export default function LoginPage({route, navigation}) {
             style={[s.btnText, {color: '#000'}]}>
             Login with Unsplash
           </Text>
-        </Pressable>
-        <Pressable
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => navigation.navigate('App Keys')}
           style={[s.btn, {backgroundColor: colors.cardHeader}]}>
           <Text style={[s.btnText, {color: colors.text}]}>
             Set your app keys
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </Layout>
   );
@@ -93,9 +95,11 @@ const s = StyleSheet.create({
     width: 16,
     marginRight: 12,
   },
+  imageWrapper: {flexGrow: 1, justifyContent: 'center', alignItems: 'center'},
   image: {
     height: 250,
     width: 250,
+
     // marginVertical: 16,
   },
 });

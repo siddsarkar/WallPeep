@@ -1,33 +1,38 @@
+import {Picker} from '@react-native-picker/picker';
 import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {logoutUser} from '../../redux/actions/userActions';
 import useDarkMode from '../../theme/useDarkMode';
 import AsyncStore from '../../utils/asyncStore';
 import Layout from '../components/common/Layout';
 
 export default function SettingsPage() {
-  const {dark, toggleDark} = useDarkMode();
-  const [isEnabled, setIsEnabled] = useState(dark);
+  const {scheme, toggleScheme} = useDarkMode();
+  const {rate} = useSelector((state) => state.rate);
+  // const [isEnabled, setIsEnabled] = useState(dark);
+  const [selectedLanguage, setSelectedLanguage] = useState(scheme);
   const {colors} = useTheme();
   const dispatch = useDispatch();
 
-  const toggleSwitch = async () => {
-    setIsEnabled(!isEnabled);
-    toggleDark(!dark);
-    if (!isEnabled) {
-      AsyncStore.setItem('theme', 'dark');
-    } else {
-      AsyncStore.setItem('theme', 'light');
-    }
+  const themes = [
+    {label: 'Light', value: 'light'},
+    {label: 'Dark', value: 'dark'},
+    {label: 'Nord', value: 'nord'},
+    {label: 'Nightly', value: 'nightly'},
+  ];
+
+  const handleSwitchScheme = (itemValue, itemIndex) => {
+    setSelectedLanguage(itemValue);
+    toggleScheme(itemValue);
+    AsyncStore.setItem('theme', itemValue);
   };
 
   const handleLogout = () => {
@@ -51,7 +56,7 @@ export default function SettingsPage() {
                 color: colors.primary,
               },
             ]}>
-            Interface
+            User
           </Text>
           <View style={s.groupItem}>
             <View style={s.textContainer}>
@@ -62,41 +67,19 @@ export default function SettingsPage() {
                     color: colors.text,
                   },
                 ]}>
-                Dark Theme
+                Rate Limit
               </Text>
-              <Text style={s.textSeecondary}>{dark ? 'on' : 'off'}</Text>
+              <Text style={{color: colors.textSecondary}}>
+                {rate['x-ratelimit-remaining'] === '0' ? 'exceeded' : 'normal'}
+              </Text>
             </View>
             <View style={s.grow} />
             <View style={s.root}>
-              <Switch
-                trackColor={{
-                  false: '#767577',
-                  true: colors.textSecondary,
-                }}
-                thumbColor={isEnabled ? colors.primary : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
+              <Text style={{color: colors.textSecondary}}>
+                {`${rate['x-ratelimit-remaining']}/${rate['x-ratelimit-limit']}`}
+              </Text>
             </View>
           </View>
-        </View>
-        <View
-          style={[
-            s.groupContainer,
-            {
-              backgroundColor: colors.card,
-            },
-          ]}>
-          <Text
-            style={[
-              s.groupTitle,
-              {
-                color: colors.primary,
-              },
-            ]}>
-            User
-          </Text>
           <TouchableOpacity onPress={handleLogout} style={s.groupItem}>
             <View style={s.textContainer}>
               <Text
@@ -108,10 +91,45 @@ export default function SettingsPage() {
                 ]}>
                 Logout
               </Text>
-              <Text style={s.textSeecondary}>{dark ? 'on' : 'off'}</Text>
+              <Text style={{color: colors.textSecondary}}>
+                logout current user
+              </Text>
             </View>
             <View style={s.grow} />
           </TouchableOpacity>
+        </View>
+        <View
+          style={[
+            s.groupContainer,
+            {
+              backgroundColor: colors.card,
+              paddingHorizontal: 0,
+            },
+          ]}>
+          <Text
+            style={[
+              s.groupTitle,
+              {
+                color: colors.primary,
+                paddingHorizontal: 15,
+              },
+            ]}>
+            Color Scheme
+          </Text>
+          <Picker
+            selectedValue={selectedLanguage}
+            onValueChange={handleSwitchScheme}>
+            {themes.map((theme, idx) => (
+              <Picker.Item
+                key={idx.toString()}
+                color={colors.text}
+                fontFamily="JosefinSans-Regular"
+                style={{color: colors.text}}
+                label={theme.label}
+                value={theme.value}
+              />
+            ))}
+          </Picker>
         </View>
       </ScrollView>
     </Layout>
@@ -126,7 +144,8 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   groupContainer: {
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     marginBottom: 12,
   },
   groupTitle: {
@@ -146,8 +165,5 @@ const s = StyleSheet.create({
   textPrimary: {
     fontSize: 18,
     fontFamily: 'JosefinSans-Regular',
-  },
-  textSeecondary: {
-    color: 'gray',
   },
 });

@@ -23,11 +23,11 @@ function generateRequest(accessToken, endpoint = '/', method = 'GET') {
  * @returns data if successful else throw err
  */
 function processResponse(response) {
-  console.log(response.headers.map['x-ratelimit-remaining']); // logs remaining requests
   if (response.ok) {
-    return response.json();
+    return response.json().then((json) => ({json, rate: response.headers.map}));
+  } else {
+    throw response.status;
   }
-  throw response.status;
 }
 
 export default {
@@ -73,6 +73,24 @@ export default {
       `/photos/${options.image.id}/like`,
       method,
     );
+
+    return fetch(driveRequest).then(processResponse);
+  },
+
+  toggleAddToCollection: (
+    accessToken,
+    options = {
+      collection_id: null,
+      photo_id: null,
+      inCollection: null,
+    },
+  ) => {
+    const method = options.inCollection ? 'DELETE' : 'POST';
+    const endPoint = options.inCollection
+      ? `/collections/${options.collection_id}/remove?photo_id=${options.photo_id}`
+      : `/collections/${options.collection_id}/add?photo_id=${options.photo_id}`;
+
+    const driveRequest = generateRequest(accessToken, endPoint, method);
 
     return fetch(driveRequest).then(processResponse);
   },

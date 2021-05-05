@@ -49,10 +49,11 @@ export default function CollectionContentPage({navigation, route}) {
       params: {url, height, width},
     });
   };
-  const handleAddToCollection = (photo_id) => {
+
+  const handleAddToCollection = ({photo_id, current_user_collections}) => {
     navigation.navigate({
       name: 'AddToCollection',
-      params: {photo_id},
+      params: {photo_id, current_user_collections},
     });
   };
 

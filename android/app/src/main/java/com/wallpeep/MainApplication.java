@@ -8,6 +8,7 @@ import com.cunyutech.hollyliu.reactnative.wallpaper.WallPaperPackage;
 import com.cunyutech.hollyliu.reactnative.wallpaper.WallPaperPackage;
 import com.cunyutech.hollyliu.reactnative.wallpaper.WallPaperPackage;
 import com.cunyutech.hollyliu.reactnative.wallpaper.WallPaperPackage;
+import com.cunyutech.hollyliu.reactnative.wallpaper.WallPaperPackage;
 // import com.rnimmersivemode.RNImmersiveModePackage;
 // import com.jayli3n.toggleimmersivemode.ToggleImmersiveModePackage;
 import io.expo.appearance.RNCAppearancePackage;

@@ -18,10 +18,12 @@ export const retrieveUser = ({accessToken}) => (dispatch, getState) => {
 };
 
 export const fetchUser = () => (dispatch, getState) =>
-  api.getUserInfo(getState().user.accessToken).then((info) => {
+  api.getUserInfo(getState().user.accessToken).then(({json, rate}) => {
     dispatch({
       type: types.GOT_USER_INFO,
-      info,
+      info: json,
+
+      rate,
     });
   });
 
@@ -39,3 +41,6 @@ export const logoutUser = () => (dispatch, getState) => {
     dispatch({type: types.USER_LOGGED_OUT});
   });
 };
+
+export const toggleRateVisibility = () => (dispatch, getState) =>
+  dispatch({type: types.TOGGLE_SHOW_RATE});

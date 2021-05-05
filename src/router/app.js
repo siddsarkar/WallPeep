@@ -97,7 +97,16 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Browse" component={views.BrowsePage} />
+      <HomeStack.Screen
+        options={{
+          headerStyle: {
+            shadowColor: 'transparent',
+            // backgroundColor: '#ededf0',
+          },
+        }}
+        name="Browse"
+        component={views.BrowsePage}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -129,7 +138,15 @@ const SettingsStack = createStackNavigator();
 function SettingsStackScreen() {
   return (
     <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Settings" component={views.SettingsPage} />
+      <SettingsStack.Screen
+        options={{
+          headerStyle: {
+            shadowColor: 'transparent',
+          },
+        }}
+        name="Settings"
+        component={views.SettingsPage}
+      />
     </SettingsStack.Navigator>
   );
 }
@@ -143,3 +160,27 @@ function ProfileStackScreen() {
     </ProfileStack.Navigator>
   );
 }
+
+// export default function WrapAppNavigator() {
+//   const {rate, rateShown} = useSelector((state) => state.rate);
+//   const {colors} = useTheme();
+//   return (
+//     <View
+//       style={{
+//         flex: 1,
+//         backgroundColor: colors.primary,
+//       }}>
+//       {rateShown && (
+//         <Text
+//           style={{
+//             alignSelf: 'center',
+//             paddingVertical: 4,
+//             color: colors.background,
+//           }}>
+//           {`${rate['x-ratelimit-remaining']}/${rate['x-ratelimit-limit']}`}
+//         </Text>
+//       )}
+//       <AppNavigator />
+//     </View>
+//   );
+// }

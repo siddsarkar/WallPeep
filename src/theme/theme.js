@@ -1,4 +1,4 @@
-import {DarkTheme, DefaultTheme} from '@react-navigation/native';
+import {DarkTheme} from '@react-navigation/native';
 
 export const darkTheme = {
   dark: true,
@@ -17,14 +17,21 @@ export const darkTheme = {
 export const lightTheme = {
   dark: false,
   colors: {
-    ...DefaultTheme.colors,
-    cardHeader: '#fff',
-    inputBackground: '#ececec',
-    textPlaceholder: '#737373',
+    ...DarkTheme.colors,
+
+    background: '#ededf0', // darkest
+    card: '#ffffff',
+    cardHeader: '#ffffff',
+    inputBackground: '#ffffff', // lightest
+
+    textPlaceholder: '#b1b1b3', // darkest
+    text: '#0c0c0d',
+    textSecondary: '#737373', // lightest
+
+    primary: '#0a84ff',
+    secondary: '#bf616a',
   },
 };
-
-// define more themes
 
 const nord = {
   /*
@@ -166,5 +173,25 @@ export const nordTheme = {
     text: nord.nord6, // lightest
 
     primary: nord.nord8,
+    secondary: nord.nord11,
+  },
+};
+
+export const nightlyTheme = {
+  dark: true,
+  colors: {
+    ...DarkTheme.colors,
+
+    background: '#1b0b1a', // darkest
+    card: '#2d132c',
+    cardHeader: '#3f1b3e',
+    inputBackground: '#e4c3d1', // lightest
+
+    textPlaceholder: '#573f4c', // darkest
+    textSecondary: '#BA9FAA',
+    text: '#e4c3d1', // lightest
+
+    primary: '#ff8364',
+    secondary: nord.nord11,
   },
 };

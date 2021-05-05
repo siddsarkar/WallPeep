@@ -8,12 +8,14 @@ import {
   Text,
   View,
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchUserCollections} from '../../redux/actions/collectionAction';
 import CollectionCard from '../components/common/CollectionCard';
 import Layout from '../components/common/Layout';
 
-export default function AddToCollectionView({navigation}) {
+export default function AddToCollectionView({navigation, route}) {
+  const {current_user_collections, photo_id} = route.params;
   const {colors} = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const {userCollections} = useSelector((state) => state.collections);
@@ -26,8 +28,17 @@ export default function AddToCollectionView({navigation}) {
   }, [dispatch]);
 
   useEffect(() => {
+    // console.log(route.params);
     dispatch(fetchUserCollections()).then(() => setIsLoading(false));
   }, [dispatch]);
+
+  // const handlePress = (id, selected) => {
+
+  //   if (selected) {
+  //     dispatch()
+  //   }
+
+  // }
 
   return (
     <Layout>
@@ -50,19 +61,20 @@ export default function AddToCollectionView({navigation}) {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           contentContainerStyle={s.root}>
-          {userCollections.map((collection) => (
+          {/* <Text style={{color: colors.text}}>In Collections</Text> */}
+          {/* {current_user_collections.map((collection) => (
             <CollectionCard
+              photoId={photo_id}
+              // onPress={handlePress}
+              component={() => (
+                <MaterialCommunityIcons name="delete" size={30} color="#fff" />
+              )}
+              selected={true}
               collection={collection}
               colors={colors}
-              // onPress={() =>
-              //   navigation.navigate({
-              //     name: 'Collection Content',
-              //     params: {collection},
-              //   })
-              // }
               key={collection.id}
             />
-          ))}
+          ))} */}
           <View style={s.cardContainer}>
             <View style={s.coverImage} />
             <View
@@ -77,6 +89,21 @@ export default function AddToCollectionView({navigation}) {
               Create New Collection
             </Text>
           </View>
+          {/* <Text style={{color: colors.text}}>All Collections</Text> */}
+          {userCollections.map((collection) => (
+            <CollectionCard
+              photoId={photo_id}
+              component={() => (
+                <MaterialCommunityIcons name="delete" size={30} color="#fff" />
+              )}
+              selected={current_user_collections.find(
+                (c) => c.id === collection.id,
+              )}
+              collection={collection}
+              colors={colors}
+              key={collection.id}
+            />
+          ))}
         </ScrollView>
       )}
     </Layout>

@@ -2,6 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Image,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -17,6 +18,7 @@ export default function CollectionPage({navigation}) {
   const {colors} = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const {collections} = useSelector((state) => state.collections);
+  const {error} = useSelector((state) => state.error);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -31,6 +33,18 @@ export default function CollectionPage({navigation}) {
 
   return (
     <Layout>
+      {error && (
+        <ScrollView
+          contentContainerStyle={s.loader}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          <Image
+            style={{height: 250, width: 250}}
+            source={require('../../assets/images/rate-limit.png')}
+          />
+        </ScrollView>
+      )}
       {isLoading ? (
         <View style={s.loader}>
           <ActivityIndicator color={colors.text} size="large" />

@@ -2,7 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {retrieveUser} from '../redux/actions/userActions';
-import {darkTheme, lightTheme} from '../theme/theme';
+import {darkTheme, lightTheme, nightlyTheme, nordTheme} from '../theme/theme';
 import useDarkMode from '../theme/useDarkMode';
 import AsyncStore from '../utils/asyncStore';
 import AppNavigator from './app';
@@ -12,7 +12,7 @@ export default function RootNavigator() {
   const [asyncStoreLoading, setAsyncStoreLoading] = useState(true);
   const [onBoardUser, setOnBoardUser] = useState(false);
   const {isLoggedIn} = useSelector((state) => state.user);
-  const {dark} = useDarkMode();
+  const {scheme} = useDarkMode();
   const dispatch = useDispatch();
 
   const initialLoad = useCallback(async () => {
@@ -51,8 +51,23 @@ export default function RootNavigator() {
     initialLoad();
   }, [initialLoad]);
 
+  const theme = () => {
+    switch (scheme) {
+      case 'light':
+        return lightTheme;
+      case 'dark':
+        return darkTheme;
+      case 'nord':
+        return nordTheme;
+      case 'nightly':
+        return nightlyTheme;
+      default:
+        break;
+    }
+  };
+
   return (
-    <NavigationContainer theme={dark ? darkTheme : lightTheme}>
+    <NavigationContainer theme={theme()}>
       {!asyncStoreLoading &&
         (isLoggedIn ? (
           <AppNavigator />

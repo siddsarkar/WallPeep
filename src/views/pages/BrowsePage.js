@@ -10,50 +10,39 @@ import {
   Text,
   View,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchPhotos} from '../../redux/actions/imageActions';
 import Card from '../components/common/Card';
 import Layout from '../components/common/Layout';
 
 export default function BrowsePage({navigation}) {
   const {colors} = useTheme();
-  const [json, setJson] = useState([]);
+  const {page, per_page, order_by, photos, error} = useSelector(
+    (state) => state.images,
+  );
 
-  const [hasError, setHasError] = useState(false);
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(true);
   const [moreLoading, setMoreLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [page, setPage] = useState(1);
   const ref = useRef(null);
   useScrollToTop(ref);
 
   useEffect(() => {
-    fetch(
-      'https://api.unsplash.com/photos?client_id=ESrWTdP2IRHxaRjjHlf5pnW0JxCmeqxGzhEZlzZmDAA&page=1&per_page=10',
-    )
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else return null;
-      })
-      .then((data) => setJson(data))
-      .catch((error) => setHasError(true))
+    dispatch(fetchPhotos())
+      .then(() => console.log('Success'))
+      .catch(() => setHasError(true))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetch(
-      'https://api.unsplash.com/photos?client_id=ESrWTdP2IRHxaRjjHlf5pnW0JxCmeqxGzhEZlzZmDAA&page=1&per_page=10',
-    )
-      .then((response) => {
-        console.log(response.headers.map['x-ratelimit-remaining']);
-        if (response.headers.map['x-ratelimit-remaining'] === 0) {
-          setHasError(true);
-        } else return response.json();
-      })
-      .then((data) => setJson(data))
-      .catch((error) => console.log(error))
+    dispatch(fetchPhotos())
+      .then(() => console.log('Success'))
+      .catch(() => setHasError(true))
       .finally(() => setRefreshing(false));
-  }, []);
+  }, [dispatch]);
 
   const handleImage = (url, height, width) => {
     navigation.navigate({
@@ -61,35 +50,31 @@ export default function BrowsePage({navigation}) {
       params: {url, height, width},
     });
   };
-  const handleAddToCollection = (photo_id) => {
+  const handleAddToCollection = ({photo_id, current_user_collections}) => {
     navigation.navigate({
       name: 'AddToCollection',
-      params: {photo_id},
+      params: {photo_id, current_user_collections},
     });
   };
 
-  const handleLoadMore = async () => {
-    setPage(page + 1);
+  const handleLoadMore = () => {
     setMoreLoading(true);
-    const res = await fetch(
-      `https://api.unsplash.com/photos?client_id=ESrWTdP2IRHxaRjjHlf5pnW0JxCmeqxGzhEZlzZmDAA&page=${
-        page + 1
-      }&per_page=10`,
-    );
-
-    if (res.headers.map['x-ratelimit-remaining'] === 0) {
-      setHasError(true);
-    } else {
-      const data = await res.json();
-      console.log(page + 1);
-      console.log(res.headers.map['x-ratelimit-remaining']);
-      setJson([...json, ...data]);
-    }
-    setMoreLoading(false);
+    dispatch(fetchPhotos({page: page + 1, per_page, order_by}))
+      .then(() => console.log('Success'))
+      .catch(() => setHasError(true))
+      .finally(() => setMoreLoading(false));
   };
 
   return (
     <Layout>
+      {error && (
+        <View style={s.loader}>
+          <Image
+            style={{height: 250, width: 250}}
+            source={require('../../assets/images/rate-limit.png')}
+          />
+        </View>
+      )}
       {isLoading ? (
         <View style={s.loader}>
           <ActivityIndicator color={colors.text} size="large" />
@@ -105,11 +90,12 @@ export default function BrowsePage({navigation}) {
         </View>
       ) : (
         <FlatList
+          // style={{paddingTop: 8}}
           ref={ref}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          data={json}
+          data={photos}
           keyExtractor={(img) => img.id}
           renderItem={({item}) => (
             <View style={s.cardContainer}>
@@ -120,22 +106,21 @@ export default function BrowsePage({navigation}) {
               />
             </View>
           )}
-          ListEmptyComponent={() =>
-            hasError && (
-              <View style={s.loader}>
-                <Image
-                  style={{height: 250, width: 250}}
-                  source={require('../../assets/images/rate-limit.png')}
-                />
-              </View>
-            )
-          }
+          // ListEmptyComponent={() => (
+          //   <View style={s.loader}>
+          //     <Image
+          //       style={{height: 250, width: 250}}
+          //       source={require('../../assets/images/rate-limit.png')}
+          //     />
+          //   </View>
+          // )}
           onEndReached={() => !moreLoading && handleLoadMore()}
           onEndReachedThreshold={0.1}
           scrollEnabled={!isLoading}
-          initialNumToRender={10}
+          initialNumToRender={3}
           ListFooterComponent={() => {
-            if (!moreLoading) return null;
+            if (error) return null;
+            console.log(error);
 
             return (
               <View style={s.footerLoader}>

@@ -92,29 +92,26 @@ export default function SearchPage({navigation}) {
           </Text>
         </View>
       ) : (
-        <>
-          {moreLoading && <Text>more</Text>}
-          <ImageGrid
-            onScroll={({nativeEvent}) => {
-              if (isCloseToBottom(nativeEvent)) {
-                !moreLoading && page + 1 <= data.total_pages && fetchMore();
-              }
-            }}
-            scrollEventThrottle={400}
-            images={data.results}
-            columns={2}
-            imageOnPress={(image) => {
-              navigation.navigate({
-                name: 'Modal',
-                params: {
-                  url: image.urls.regular,
-                  height: image.height,
-                  width: image.width,
-                },
-              });
-            }}
-          />
-        </>
+        <ImageGrid
+          onScroll={({nativeEvent}) => {
+            if (isCloseToBottom(nativeEvent)) {
+              !moreLoading && page + 1 <= data.total_pages && fetchMore();
+            }
+          }}
+          scrollEventThrottle={400}
+          images={data.results}
+          columns={3}
+          imageOnPress={(image) => {
+            navigation.navigate({
+              name: 'Modal',
+              params: {
+                url: image.urls.regular,
+                height: image.height,
+                width: image.width,
+              },
+            });
+          }}
+        />
       )}
     </Layout>
   );

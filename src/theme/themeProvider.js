@@ -3,36 +3,36 @@ import {Appearance, AppearanceProvider} from 'react-native-appearance';
 import AsyncStore from '../utils/asyncStore';
 
 const ThemeContext = createContext({
-  dark: false,
-  toggleDark: () => {},
+  scheme: 'light',
+  toggleScheme: () => {},
 });
 
 const ThemeProvider = ({children}) => {
-  const [dark, setDark] = useState(false);
+  const [scheme, setScheme] = useState('light');
 
   useEffect(() => {
     async function retrieveTheme() {
-      const isDark = await AsyncStore.getItem('theme');
-      if (isDark === 'dark') {
-        toggleDark(true);
+      const asScheme = await AsyncStore.getItem('theme');
+      if (asScheme) {
+        toggleScheme(asScheme);
       }
     }
     retrieveTheme();
     const subscription = Appearance.addChangeListener(({colorScheme}) => {
-      toggleDark(colorScheme);
+      toggleScheme(colorScheme);
     });
     return () => subscription.remove();
   }, []);
 
-  const toggleDark = (mode) => {
-    setDark(mode);
+  const toggleScheme = (_scheme) => {
+    setScheme(_scheme);
   };
 
   return (
     <ThemeContext.Provider
       value={{
-        dark,
-        toggleDark,
+        scheme,
+        toggleScheme,
       }}>
       {children}
     </ThemeContext.Provider>

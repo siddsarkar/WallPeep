@@ -1,28 +1,94 @@
-import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch} from 'react-redux';
+import {toggleCollection} from '../../../redux/actions/imageActions';
 
-const CollectionCard = ({onPress, colors, collection}) => (
-  <Pressable onPress={onPress} style={s.cardContainer}>
-    <Image
-      style={s.coverImage}
-      source={{
-        uri: collection.cover_photo.urls.small,
-      }}
-    />
-    <View
-      style={[
-        s.tint,
+const CollectionCard = ({
+  onPress,
+  colors,
+  collection,
+  selected,
+  photoId,
+  component = null,
+}) => {
+  const dispatch = useDispatch();
+  const [isCollected, setIsCollected] = useState(selected);
+  const [collecting, setCollecting] = useState(false);
+
+  const handleToggle = () => {
+    setCollecting(true);
+    dispatch(
+      toggleCollection(
         {
-          backgroundColor: colors.background,
+          inCollection: isCollected,
+          photo_id: photoId,
+          collection_id: collection.id,
         },
-      ]}
-    />
-    <Text style={[s.title, {color: colors.text}]}>{collection.title}</Text>
-    <Text style={[s.subTitle, {color: colors.textSecondary}]}>
-      {collection.total_photos}&nbsp;photos
-    </Text>
-  </Pressable>
-);
+        (json) => {
+          console.log(json);
+          setIsCollected(!selected);
+          setCollecting(false);
+        },
+      ),
+    );
+  };
+  return (
+    <Pressable
+      onPress={() => onPress(collection.id, selected)}
+      style={[s.cardContainer, {backgroundColor: colors.cardHeader}]}>
+      {collection.cover_photo && (
+        <Image
+          style={s.coverImage}
+          source={{
+            uri: collection.cover_photo.urls.small,
+          }}
+        />
+      )}
+      <View
+        style={[
+          s.tint,
+          {
+            backgroundColor: colors.background,
+          },
+        ]}
+      />
+      <Text style={[s.title, {color: colors.text}]}>{collection.title}</Text>
+      <Text style={[s.subTitle, {color: colors.textSecondary}]}>
+        {collection.total_photos}&nbsp;photos
+      </Text>
+      {component && (
+        <Pressable
+          onPress={handleToggle}
+          style={{
+            position: 'absolute',
+            right: 0,
+            height: '100%',
+            width: '20%',
+            backgroundColor: colors.background,
+            opacity: 0.4,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {component && collecting ? (
+            <ActivityIndicator size="small" color={colors.text} />
+          ) : isCollected ? (
+            component()
+          ) : (
+            <MaterialCommunityIcons name="plus" size={30} color="#fff" />
+          )}
+        </Pressable>
+      )}
+    </Pressable>
+  );
+};
 
 export default CollectionCard;
 
