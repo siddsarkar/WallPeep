@@ -1,4 +1,22 @@
-import {DarkTheme} from '@react-navigation/native';
+import {DarkTheme, DefaultTheme} from '@react-navigation/native';
+
+// const darkColors = {
+//   background: 'rgb(1, 1, 1)',
+//   border: 'rgb(39, 39, 41)',
+//   card: 'rgb(18, 18, 18)',
+//   notification: 'rgb(255f, 69, 58)',
+//   primary: 'rgb(10, 132, 255)',
+//   text: 'rgb(229, 229, 231)',
+// };
+
+// const lightColors = {
+//   background: 'rgb(242, 242, 242)',
+//   border: 'rgb(216, 216, 216)',
+//   card: 'rgb(255, 255, 255)',
+//   notification: 'rgb(255, 59, 48)',
+//   primary: 'rgb(0, 122, 255)',
+//   text: 'rgb(28, 28, 30)',
+// };
 
 export const darkTheme = {
   dark: true,
@@ -17,14 +35,14 @@ export const darkTheme = {
 export const lightTheme = {
   dark: false,
   colors: {
-    ...DarkTheme.colors,
+    ...DefaultTheme.colors,
 
     background: '#ededf0', // darkest
     card: '#ffffff',
     cardHeader: '#ffffff',
-    inputBackground: '#ffffff', // lightest
+    inputBackground: '#E8E8E8', // lightest
 
-    textPlaceholder: '#b1b1b3', // darkest
+    textPlaceholder: '#a9a9a9', // darkest
     text: '#0c0c0d',
     textSecondary: '#737373', // lightest
 

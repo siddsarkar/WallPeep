@@ -6,7 +6,6 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -48,15 +47,6 @@ export default function CollectionPage({navigation}) {
       {isLoading ? (
         <View style={s.loader}>
           <ActivityIndicator color={colors.text} size="large" />
-          <Text
-            style={[
-              s.text,
-              {
-                color: colors.text,
-              },
-            ]}>
-            Loading Collections...
-          </Text>
         </View>
       ) : (
         <ScrollView

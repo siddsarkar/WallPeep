@@ -4,23 +4,31 @@ import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
+  Switch,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {logoutUser} from '../../redux/actions/userActions';
+import {
+  logoutUser,
+  toggleRateVisibility,
+} from '../../redux/actions/userActions';
 import useDarkMode from '../../theme/useDarkMode';
 import AsyncStore from '../../utils/asyncStore';
 import Layout from '../components/common/Layout';
 
 export default function SettingsPage() {
   const {scheme, toggleScheme} = useDarkMode();
-  const {rate} = useSelector((state) => state.rate);
-  // const [isEnabled, setIsEnabled] = useState(dark);
+  const {rate, rateShown} = useSelector((state) => state.rate);
+  // const [isEnabled, setIsEnabled] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(scheme);
   const {colors} = useTheme();
   const dispatch = useDispatch();
+
+  const toggleSwitch = (params) => {
+    dispatch(toggleRateVisibility());
+  };
 
   const themes = [
     {label: 'Light', value: 'light'},
@@ -78,6 +86,35 @@ export default function SettingsPage() {
               <Text style={{color: colors.textSecondary}}>
                 {`${rate['x-ratelimit-remaining']}/${rate['x-ratelimit-limit']}`}
               </Text>
+            </View>
+          </View>
+          <View style={s.groupItem}>
+            <View style={s.textContainer}>
+              <Text
+                style={[
+                  s.textPrimary,
+                  {
+                    color: colors.text,
+                  },
+                ]}>
+                Show rate at top
+              </Text>
+              <Text style={{color: colors.textSecondary}}>
+                shows rate limit
+              </Text>
+            </View>
+            <View style={s.grow} />
+            <View style={s.root}>
+              <Switch
+                trackColor={{
+                  false: '#767577',
+                  true: colors.textSecondary,
+                }}
+                thumbColor={rateShown ? colors.primary : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={rateShown}
+              />
             </View>
           </View>
           <TouchableOpacity onPress={handleLogout} style={s.groupItem}>

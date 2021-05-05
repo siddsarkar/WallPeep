@@ -8,5 +8,6 @@ module.exports = {
         extensions: ['.js', '.jsx'],
       },
     ],
+    'global-require': 'off',
   },
 };

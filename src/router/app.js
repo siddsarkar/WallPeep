@@ -1,8 +1,12 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
+import {Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import * as views from '../views/pages';
+import CollectionsTab from '../views/pages/Profile/Tabs/CollectionsTab';
 import tabsConfig from './configs/tabsConfig';
 
 /**
@@ -11,7 +15,7 @@ import tabsConfig from './configs/tabsConfig';
 
 const AppStack = createStackNavigator();
 
-export default function AppNavigator() {
+function AppNavigator() {
   return (
     <AppStack.Navigator mode="modal">
       {/* Main Navigator */}
@@ -120,16 +124,41 @@ function SearchStackScreen() {
   );
 }
 
-const GalleryStack = createStackNavigator();
+const CollectionTab = createMaterialTopTabNavigator();
 
 function GalleryStackScreen() {
+  const {colors} = useTheme();
   return (
-    <GalleryStack.Navigator>
-      <GalleryStack.Screen
+    <CollectionTab.Navigator
+      tabBarOptions={{
+        indicatorStyle: {
+          position: 'relative',
+          height: '80%',
+          width: '90%',
+          borderRadius: 4,
+          backgroundColor: colors.cardHeader,
+        },
+        activeTintColor: colors.text,
+        inactiveTintColor: colors.textSecondary,
+        showIcon: false,
+        indicatorContainerStyle: {
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '50%',
+        },
+      }}>
+      <CollectionTab.Screen
         name="Collections"
+        options={{title: 'Public'}}
         component={views.CollectionPage}
       />
-    </GalleryStack.Navigator>
+      <CollectionTab.Screen
+        options={{title: 'Personal'}}
+        name="Personal Collections"
+        component={CollectionsTab}
+      />
+    </CollectionTab.Navigator>
   );
 }
 
@@ -156,31 +185,40 @@ const ProfileStack = createStackNavigator();
 function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
-      <ProfileStack.Screen name="Profile" component={views.ProfilePage} />
+      <ProfileStack.Screen
+        options={{
+          headerStyle: {
+            shadowColor: 'transparent',
+          },
+        }}
+        name="Profile"
+        component={views.ProfilePage}
+      />
     </ProfileStack.Navigator>
   );
 }
 
-// export default function WrapAppNavigator() {
-//   const {rate, rateShown} = useSelector((state) => state.rate);
-//   const {colors} = useTheme();
-//   return (
-//     <View
-//       style={{
-//         flex: 1,
-//         backgroundColor: colors.primary,
-//       }}>
-//       {rateShown && (
-//         <Text
-//           style={{
-//             alignSelf: 'center',
-//             paddingVertical: 4,
-//             color: colors.background,
-//           }}>
-//           {`${rate['x-ratelimit-remaining']}/${rate['x-ratelimit-limit']}`}
-//         </Text>
-//       )}
-//       <AppNavigator />
-//     </View>
-//   );
-// }
+export default function WrapAppNavigator() {
+  const {rate, rateShown} = useSelector((state) => state.rate);
+  const {colors} = useTheme();
+  return (
+    <>
+      {rateShown && (
+        <View
+          style={{
+            backgroundColor: colors.primary,
+          }}>
+          <Text
+            style={{
+              alignSelf: 'center',
+              paddingVertical: 4,
+              color: colors.background,
+            }}>
+            {`${rate['x-ratelimit-remaining']}/${rate['x-ratelimit-limit']}`}
+          </Text>
+        </View>
+      )}
+      <AppNavigator />
+    </>
+  );
+}

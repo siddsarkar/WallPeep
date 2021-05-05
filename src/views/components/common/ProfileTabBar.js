@@ -9,6 +9,7 @@ export default function ProfileTabBar({
   navigation,
   position,
   colors,
+  indicatorStyle = {},
 }) {
   return (
     <View style={[s.tabBar, {backgroundColor: colors.card}]}>
@@ -73,6 +74,7 @@ export default function ProfileTabBar({
                 {
                   backgroundColor: colors.cardHeader,
                   opacity: backgroundOpacity,
+                  ...indicatorStyle,
                 },
               ]}
             />

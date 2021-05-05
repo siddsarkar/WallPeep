@@ -14,7 +14,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchUser} from '../../../redux/actions/userActions';
 import Layout from '../../components/common/Layout';
-import ProfileTabBar from '../../components/common/ProfileTabBar';
 import Avatar from '../../components/ui/Avatar';
 import CollectionsTab from './Tabs/CollectionsTab';
 import PhotosTab from './Tabs/PhotosTab';
@@ -26,7 +25,26 @@ function TopTabNavigator() {
   return (
     <Tab.Navigator
       // eslint-disable-next-line react/jsx-props-no-spreading
-      tabBar={(props) => <ProfileTabBar colors={colors} {...props} />}>
+      // tabBar={(props) => <ProfileTabBar colors={colors} {...props} />}
+      tabBarOptions={{
+        indicatorStyle: {
+          position: 'relative',
+          height: '80%',
+          width: '90%',
+          borderRadius: 4,
+          backgroundColor: colors.cardHeader,
+        },
+
+        activeTintColor: colors.text,
+        inactiveTintColor: colors.textSecondary,
+        showIcon: false,
+        indicatorContainerStyle: {
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '50%',
+        },
+      }}>
       <Tab.Screen
         options={{tabBarIcon: 'view-grid'}}
         name="Collections"

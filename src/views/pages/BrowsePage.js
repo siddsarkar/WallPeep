@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {useScrollToTop, useTheme} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
@@ -30,18 +29,12 @@ export default function BrowsePage({navigation}) {
   useScrollToTop(ref);
 
   useEffect(() => {
-    dispatch(fetchPhotos())
-      .then(() => console.log('Success'))
-      .catch(() => setHasError(true))
-      .finally(() => setIsLoading(false));
+    dispatch(fetchPhotos()).then(() => setIsLoading(false));
   }, [dispatch]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchPhotos())
-      .then(() => console.log('Success'))
-      .catch(() => setHasError(true))
-      .finally(() => setRefreshing(false));
+    dispatch(fetchPhotos()).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const handleImage = (url, height, width) => {
@@ -59,10 +52,9 @@ export default function BrowsePage({navigation}) {
 
   const handleLoadMore = () => {
     setMoreLoading(true);
-    dispatch(fetchPhotos({page: page + 1, per_page, order_by}))
-      .then(() => console.log('Success'))
-      .catch(() => setHasError(true))
-      .finally(() => setMoreLoading(false));
+    dispatch(fetchPhotos({page: page + 1, per_page, order_by})).then(() =>
+      setMoreLoading(false),
+    );
   };
 
   return (

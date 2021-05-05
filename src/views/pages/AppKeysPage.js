@@ -73,7 +73,7 @@ export default function AppKeysPage({navigation}) {
           style={[
             s.textField,
             {
-              color: colors.text,
+              color: colors.textPlaceholder,
               backgroundColor: colors.inputBackground,
             },
           ]}

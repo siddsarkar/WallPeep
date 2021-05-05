@@ -31,7 +31,7 @@ export default function CollectionsTab({navigation}) {
   return (
     <Layout>
       {isLoading ? (
-        <View style={{flex: 1, paddingTop: 150, alignItems: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator color={colors.text} size="large" />
         </View>
       ) : (

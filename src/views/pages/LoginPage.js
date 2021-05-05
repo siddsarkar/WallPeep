@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
 import {loginUser} from '../../redux/actions/userActions';
 import authorize from '../../services/authorize';
@@ -43,9 +44,7 @@ export default function LoginPage({route, navigation}) {
             source={require('../../assets/images/crayon-image-settings.png')}
           />
         </View>
-        <TouchableOpacity
-          onPress={handlePress}
-          style={[s.btn, {backgroundColor: colors.text}]}>
+        <TouchableOpacity onPress={handlePress} style={s.btn}>
           <Image
             style={s.logo}
             source={require('../../assets/images/Unsplash_Symbol.png')}
@@ -53,14 +52,20 @@ export default function LoginPage({route, navigation}) {
           <Text
             // eslint-disable-next-line react-native/no-inline-styles
             style={[s.btnText, {color: '#000'}]}>
-            Login with Unsplash
+            &nbsp;&nbsp;Login with Unsplash
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('App Keys')}
-          style={[s.btn, {backgroundColor: colors.cardHeader}]}>
-          <Text style={[s.btnText, {color: colors.text}]}>
-            Set your app keys
+          style={[s.btn, {backgroundColor: colors.primary}]}>
+          <MaterialCommunityIcons
+            name="key"
+            size={20}
+            color={colors.background}
+            style={s.searchIcon}
+          />
+          <Text style={[s.btnText, {color: colors.background}]}>
+            &nbsp;&nbsp;Set your app keys
           </Text>
         </TouchableOpacity>
       </View>
@@ -84,6 +89,7 @@ const s = StyleSheet.create({
     width: 350,
     marginBottom: 12,
     borderRadius: 6,
+    backgroundColor: 'white',
     // borderColor: 'darkgrey',
   },
   btnText: {
@@ -93,12 +99,11 @@ const s = StyleSheet.create({
   logo: {
     height: 16,
     width: 16,
-    marginRight: 12,
   },
   imageWrapper: {flexGrow: 1, justifyContent: 'center', alignItems: 'center'},
   image: {
     height: 250,
-    width: 250,
+    aspectRatio: 1216 / 912,
 
     // marginVertical: 16,
   },

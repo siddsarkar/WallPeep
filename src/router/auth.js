@@ -17,7 +17,12 @@ export default function AuthNavigator({onBoardUser}) {
 
       <Stack.Screen
         name="App Keys"
-        options={{headerShown: true}}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            shadowColor: 'transparent',
+          },
+        }}
         component={AppKeysPage}
       />
     </Stack.Navigator>
