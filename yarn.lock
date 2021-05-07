@@ -5863,6 +5863,11 @@ react-native-scrollable-tab-view@^1.0.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-set-wallpaper@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-set-wallpaper/-/react-native-set-wallpaper-1.0.2.tgz#59212f8ae9162dd91cb306092d8253929808b378"
+  integrity sha512-W16o43FftxhR/S+Mk3ZRe7wtg4MI0hK3bFyRgqjdhCR3QKaDOknsd+v5WRzf1zvBeFD3bVbbixWHqBYv4E5X5w==
+
 react-native-tab-view@^2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.16.0.tgz#cae72c7084394bd328fac5fefb86cd966df37a86"
@@ -5881,11 +5886,6 @@ react-native-vector-icons@^8.1.0:
     lodash.template "^4.5.0"
     prop-types "^15.7.2"
     yargs "^16.1.1"
-
-react-native-wallpaper-manager@^0.3.16:
-  version "0.3.16"
-  resolved "https://registry.yarnpkg.com/react-native-wallpaper-manager/-/react-native-wallpaper-manager-0.3.16.tgz#b6985b03c6df2efbcc2071db5977ab6eb932b596"
-  integrity sha1-tphbA8bfLvvMIHHbWXerbrkytZY=
 
 react-native@0.64.0:
   version "0.64.0"

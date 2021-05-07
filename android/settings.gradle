@@ -1,18 +1,6 @@
 rootProject.name = 'WallPeep'
-include ':react-native-wallpaper-manager'
-project(':react-native-wallpaper-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wallpaper-manager/android')
-include ':react-native-wallpaper-manager'
-project(':react-native-wallpaper-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wallpaper-manager/android')
-include ':react-native-wallpaper-manager'
-project(':react-native-wallpaper-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wallpaper-manager/android')
-include ':react-native-wallpaper-manager'
-project(':react-native-wallpaper-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wallpaper-manager/android')
-include ':react-native-wallpaper-manager'
-project(':react-native-wallpaper-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-wallpaper-manager/android')
-include ':react-native-immersive-mode'
-project(':react-native-immersive-mode').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-immersive-mode/android')
-include ':react-native-android-immersive-mode'
-project(':react-native-android-immersive-mode').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-immersive-mode/android')
+include ':react-native-set-wallpaper'
+project(':react-native-set-wallpaper').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-set-wallpaper/android')
 include ':react-native-appearance'
 project(':react-native-appearance').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-appearance/android')
 include ':@react-native-async-storage_async-storage'
