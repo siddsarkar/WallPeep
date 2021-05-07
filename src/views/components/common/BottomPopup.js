@@ -9,8 +9,8 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
+import WallPaperManager from 'react-native-set-wallpaper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import WallPaperManager from 'react-native-wallpaper-manager';
 
 const BottomPopup = ({modalVisible, toggleModal, urls}) => {
   const {colors} = useTheme();
