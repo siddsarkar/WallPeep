@@ -1,6 +1,6 @@
-import {useContext} from 'react';
-import {ThemeContext} from './themeProvider';
+import {useContext} from 'react'
+import {ThemeContext} from './themeProvider'
 
-const useDarkMode = () => useContext(ThemeContext);
+const useDarkMode = () => useContext(ThemeContext)
 
-export default useDarkMode;
+export default useDarkMode
