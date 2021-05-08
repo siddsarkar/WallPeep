@@ -1,138 +1,143 @@
 /**
- * global api request bridge
- * @param {string} accessToken OAuth Accesstoken
- * @param {string} endpoint request endpoint
- * @param {string} method http request method
- * @returns a request object to be passes into fetch
- */
-function generateRequest(accessToken, endpoint = '/', method = 'GET') {
-  const requestURL = `https://api.unsplash.com${endpoint}`;
-  const requestHeaders = new Headers();
-  requestHeaders.append('Authorization', `Bearer ${accessToken}`);
-
-  // eslint-disable-next-line no-undef
-  return new Request(requestURL, {
-    method,
-    headers: requestHeaders,
-  });
-}
-
-/**
  * global response bridge
  * @param {*} response response from api
  * @returns data if successful else throw err
  */
 function processResponse(response) {
-  if (response.ok) {
-    return response.json().then((json) => ({json, rate: response.headers.map}));
-  } else {
-    throw response.status;
-  }
+    console.log(response)
+    if (response.ok) {
+        return response
+            .json()
+            .then((json) => ({json, rate: response.headers.map}))
+    }
+    throw response.status
 }
 
 export default {
-  // Current User Actions
+    getUserInfo: (accessToken) => {
+        const endpoint = `/me`
+        const requestURL = `https://api.unsplash.com${endpoint}`
 
-  getUserInfo: (accessToken, options) => {
-    const driveRequest = generateRequest(accessToken, '/me');
-
-    return fetch(driveRequest).then(processResponse);
-  },
-
-  getUserPhotos: (accessToken, options = {username: ''}) => {
-    const driveRequest = generateRequest(
-      accessToken,
-      `/users/${options.username}/photos`,
-    );
-
-    return fetch(driveRequest).then(processResponse);
-  },
-
-  getUserLikes: (accessToken, options = {username: ''}) => {
-    const driveRequest = generateRequest(
-      accessToken,
-      `/users/${options.username}/likes`,
-    );
-
-    return fetch(driveRequest).then(processResponse);
-  },
-
-  getUserCollections: (accessToken, options = {username: ''}) => {
-    const driveRequest = generateRequest(
-      accessToken,
-      `/users/${options.username}/collections`,
-    );
-
-    return fetch(driveRequest).then(processResponse);
-  },
-
-  toggleImageLike: (accessToken, options = {image: {}}) => {
-    const method = options.image.liked_by_user ? 'DELETE' : 'POST';
-    const driveRequest = generateRequest(
-      accessToken,
-      `/photos/${options.image.id}/like`,
-      method,
-    );
-
-    return fetch(driveRequest).then(processResponse);
-  },
-
-  toggleAddToCollection: (
-    accessToken,
-    options = {
-      collection_id: null,
-      photo_id: null,
-      inCollection: null,
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
     },
-  ) => {
-    const method = options.inCollection ? 'DELETE' : 'POST';
-    const endPoint = options.inCollection
-      ? `/collections/${options.collection_id}/remove?photo_id=${options.photo_id}`
-      : `/collections/${options.collection_id}/add?photo_id=${options.photo_id}`;
 
-    const driveRequest = generateRequest(accessToken, endPoint, method);
+    getUserPhotos: (accessToken, {username}) => {
+        const endpoint = `/users/${username}/photos`
+        const requestURL = `https://api.unsplash.com${endpoint}`
 
-    return fetch(driveRequest).then(processResponse);
-  },
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
 
-  // Public Actions
+    getUserLikes: (accessToken, {username}) => {
+        const endpoint = `/users/${username}/likes`
+        const requestURL = `https://api.unsplash.com${endpoint}`
 
-  getRandomPhotos: (
-    accessToken,
-    options = {page: 1, per_page: 10, order_by: 'latest'},
-  ) => {
-    const driveRequest = generateRequest(
-      accessToken,
-      `/photos?page=${options.page}&per_page=${options.per_page}&order_by=${options.order_by}`,
-    );
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
 
-    return fetch(driveRequest).then(processResponse);
-  },
+    getUserCollections: (accessToken, {username}) => {
+        const endpoint = `/users/${username}/collections`
+        const requestURL = `https://api.unsplash.com${endpoint}`
 
-  getSearchPhotos: (
-    accessToken,
-    options = {query: '', page: 1, per_page: 30},
-  ) => {
-    const driveRequest = generateRequest(
-      accessToken,
-      `/search/photos?query=${options.query}&page=${options.page}&per_page=${options.per_page}`,
-    );
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
 
-    return fetch(driveRequest).then(processResponse);
-  },
+    toggleImageLike: (accessToken, options = {image: {}}) => {
+        const method = options.image.liked_by_user ? 'DELETE' : 'POST'
+        const endpoint = `/photos/${options.image.id}/like`
+        const requestURL = `https://api.unsplash.com${endpoint}`
 
-  getCollections: (accessToken, options = {}) => {
-    const driveRequest = generateRequest(accessToken, '/collections');
+        return fetch(requestURL, {
+            method,
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
 
-    return fetch(driveRequest).then(processResponse);
-  },
+    toggleAddToCollection: (
+        accessToken,
+        {collection_id, photo_id, collected}
+    ) => {
+        const method = collected ? 'DELETE' : 'POST'
+        const endpoint = collected
+            ? `/collections/${collection_id}/remove?photo_id=${photo_id}`
+            : `/collections/${collection_id}/add?photo_id=${photo_id}`
+        const requestURL = `https://api.unsplash.com${endpoint}`
 
-  getCollection: (accessToken, options = {id: 0}) => {
-    const driveRequest = generateRequest(
-      accessToken,
-      `/collections/${options.id}/photos`,
-    );
+        return fetch(requestURL, {
+            method,
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
 
-    return fetch(driveRequest).then(processResponse);
-  },
-};
+    getRandomPhotos: (accessToken, {page, per_page, order_by}) => {
+        const endpoint = `/photos?page=${page}&per_page=${per_page}&order_by=${order_by}`
+        const requestURL = `https://api.unsplash.com${endpoint}`
+
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
+
+    getSearchPhotos: (accessToken, {query, page, per_page}) => {
+        const endpoint = `/search/photos?query=${query}&page=${page}&per_page=${per_page}`
+        const requestURL = `https://api.unsplash.com${endpoint}`
+
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
+
+    getCollections: (accessToken) => {
+        const endpoint = `/collections`
+        const requestURL = `https://api.unsplash.com${endpoint}`
+
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    },
+
+    getCollection: (accessToken, {id}) => {
+        const endpoint = `/collections/${id}/photos`
+        const requestURL = `https://api.unsplash.com${endpoint}`
+
+        return fetch(requestURL, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(processResponse)
+    }
+}

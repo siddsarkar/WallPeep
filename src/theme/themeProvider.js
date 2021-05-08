@@ -1,49 +1,56 @@
-import React, {createContext, useEffect, useState} from 'react';
-import {Appearance, AppearanceProvider} from 'react-native-appearance';
-import AsyncStore from '../utils/asyncStore';
+import React, {createContext, useEffect, useState} from 'react'
+import {Appearance, AppearanceProvider} from 'react-native-appearance'
+import AsyncStore from '../utils/asyncStore'
 
-const ThemeContext = createContext({
-  scheme: 'light',
-  toggleScheme: () => {},
-});
+function ThemeProvider({children}) {
+    const [scheme, setScheme] = useState('light')
 
-const ThemeProvider = ({children}) => {
-  const [scheme, setScheme] = useState('light');
+    useEffect(() => {
+        /**
+         * retrieve theme from AsyncStorage
+         */
+        ;(async function () {
+            const asScheme = await AsyncStore.getItem('theme')
+            console.info('App Theme:', asScheme)
+            if (asScheme) {
+                toggleScheme(asScheme)
+            }
+        })()
 
-  useEffect(() => {
-    async function retrieveTheme() {
-      const asScheme = await AsyncStore.getItem('theme');
-      if (asScheme) {
-        toggleScheme(asScheme);
-      }
+        /**
+         * listener for scheme changes
+         */
+        const subscription = Appearance.addChangeListener(({colorScheme}) => {
+            toggleScheme(colorScheme)
+        })
+
+        return () => subscription.remove()
+    }, [])
+
+    const toggleScheme = (_scheme) => {
+        setScheme(_scheme)
     }
-    retrieveTheme();
-    const subscription = Appearance.addChangeListener(({colorScheme}) => {
-      toggleScheme(colorScheme);
-    });
-    return () => subscription.remove();
-  }, []);
 
-  const toggleScheme = (_scheme) => {
-    setScheme(_scheme);
-  };
+    return (
+        <ThemeContext.Provider
+            value={{
+                scheme,
+                toggleScheme
+            }}>
+            {children}
+        </ThemeContext.Provider>
+    )
+}
 
-  return (
-    <ThemeContext.Provider
-      value={{
-        scheme,
-        toggleScheme,
-      }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
+export const ThemeContext = createContext({
+    scheme: 'light', // includes - dark, nord, nightly
+    toggleScheme: () => {}
+})
 
-const ThemeManager = ({children}) => (
-  <AppearanceProvider>
-    <ThemeProvider>{children}</ThemeProvider>
-  </AppearanceProvider>
-);
-
-export {ThemeContext};
-export default ThemeManager;
+export default function ThemeManager({children}) {
+    return (
+        <AppearanceProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+        </AppearanceProvider>
+    )
+}
