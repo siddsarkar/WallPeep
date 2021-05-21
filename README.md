@@ -1,5 +1,7 @@
-<p style="display:flex; justify-content:center;">
-<img src="https://raw.githubusercontent.com/siddsarkar/WallPeep/main/screenshots/Logo.png?token=ALTGI27OUTZBRN6JLBASRY3AWCYR2">
+<p align="center">
+  <a href="#">
+    <img src="https://raw.githubusercontent.com/siddsarkar/WallPeep/main/screenshots/Logo.png?token=ALTGI27OUTZBRN6JLBASRY3AWCYR2">
+  </a>
 </p>
 
 <h3 align="center">Wallpeep</h3>
