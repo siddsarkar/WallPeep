@@ -9,7 +9,13 @@
                 "extensions": [".js", ".jsx"]
             }
         ],
-        "global-require": "off"
+        "global-require": "off",
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ]
     },
     "plugins": ["prettier"]
 }
