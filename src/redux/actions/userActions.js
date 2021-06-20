@@ -2,20 +2,22 @@ import api from '../../services/api'
 import AsyncStore from '../../utils/asyncStore'
 import * as types from '../types'
 
-export const retrieveUser = ({accessToken}) => (dispatch, getState) => {
-    if (accessToken) {
-        dispatch({
-            type: types.USER_RETRIEVED,
-            isLoggedIn: true,
-            accessToken
-        })
-    } else {
-        dispatch({
-            type: types.USER_RETRIEVED,
-            isLoggedIn: false
-        })
+export const retrieveUser =
+    ({accessToken}) =>
+    (dispatch, getState) => {
+        if (accessToken) {
+            dispatch({
+                type: types.USER_RETRIEVED,
+                isLoggedIn: true,
+                accessToken
+            })
+        } else {
+            dispatch({
+                type: types.USER_RETRIEVED,
+                isLoggedIn: false
+            })
+        }
     }
-}
 
 export const fetchUser = () => (dispatch, getState) =>
     api.getUserInfo(getState().user.accessToken).then(({json, rate}) => {
