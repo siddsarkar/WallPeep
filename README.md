@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#">
-    <img src="https://github.com/siddsarkar/WallPeep/blob/main/screenshots/Logo.png?raw=true">
+    <img src="https://raw.githubusercontent.com/siddsarkar/WallPeep/main/resources/Logo.png?token=ALTGI2ZQBBQGMQPVRAGUYTDBAUOBK">
   </a>
 </p>
 
@@ -22,7 +22,7 @@
 
 ### Screen Shots
 
-<img src="https://github.com/siddsarkar/WallPeep/blob/main/screenshots/Cover.png?raw=true">
+<img src="https://raw.githubusercontent.com/siddsarkar/WallPeep/main/resources/Cover.png?token=ALTGI2YXJ4KCC3CLD7GT7XTBAUOPW">
 
 ## Installation
 
