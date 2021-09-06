@@ -9,82 +9,80 @@ import AppNavigator from './app'
 import AuthNavigator from './auth'
 
 export default function RootNavigator() {
-    const [asyncStoreLoading, setAsyncStoreLoading] = useState(true)
-    const [onBoardUser, setOnBoardUser] = useState(false) // whether to show onboard screen or not
-    const {isLoggedIn} = useSelector((state) => state.user)
-    const {scheme} = useDarkMode()
-    const dispatch = useDispatch()
+  const [asyncStoreLoading, setAsyncStoreLoading] = useState(true)
+  const [onBoardUser, setOnBoardUser] = useState(false) // whether to show onboard screen or not
+  const {isLoggedIn} = useSelector(state => state.user)
+  const {scheme} = useDarkMode()
+  const dispatch = useDispatch()
 
-    const initializeApp = useCallback(async () => {
-        const keys = await AsyncStore.getAllKeys()
+  const initializeApp = useCallback(async () => {
+    const keys = await AsyncStore.getAllKeys()
 
-        if (!keys.includes('theme')) {
-            /**
-             * App started for the first time, initialize the app
-             */
+    if (!keys.includes('theme')) {
+      /**
+       * App started for the first time, initialize the app
+       */
 
-            await AsyncStore.setItem('theme', 'light')
-            setOnBoardUser(true)
-            setAsyncStoreLoading(false)
+      await AsyncStore.setItem('theme', 'light')
+      setOnBoardUser(true)
+      setAsyncStoreLoading(false)
+    } else {
+      /**
+       * Check for access & secret keys
+       */
+
+      if (!keys.includes('AppKeys')) {
+        setAsyncStoreLoading(false)
+      } else {
+        /**
+         * Check if access & secret keys are verified
+         */
+
+        if ((await AsyncStore.getItem('AppKeys')).verified) {
+          /**
+           * get the access_token and dispatch action to login user
+           */
+
+          dispatch(
+            retrieveUser({
+              accessToken: await AsyncStore.getItem('access_token'),
+            }),
+          )
+          setAsyncStoreLoading(false)
         } else {
-            /**
-             * Check for access & secret keys
-             */
-
-            if (!keys.includes('AppKeys')) {
-                setAsyncStoreLoading(false)
-            } else {
-                /**
-                 * Check if access & secret keys are verified
-                 */
-
-                if ((await AsyncStore.getItem('AppKeys')).verified) {
-                    /**
-                     * get the access_token and dispatch action to login user
-                     */
-
-                    dispatch(
-                        retrieveUser({
-                            accessToken: await AsyncStore.getItem(
-                                'access_token'
-                            )
-                        })
-                    )
-                    setAsyncStoreLoading(false)
-                } else {
-                    setAsyncStoreLoading(false)
-                }
-            }
+          setAsyncStoreLoading(false)
         }
-    }, [dispatch])
-
-    useEffect(() => {
-        initializeApp()
-    }, [initializeApp])
-
-    const theme = () => {
-        switch (scheme) {
-            case 'light':
-                return lightTheme
-            case 'dark':
-                return darkTheme
-            case 'nord':
-                return nordTheme
-            case 'nightly':
-                return nightlyTheme
-            default:
-                return lightTheme
-        }
+      }
     }
+  }, [dispatch])
 
-    return (
-        <NavigationContainer theme={theme()}>
-            {!asyncStoreLoading &&
-                (isLoggedIn ? (
-                    <AppNavigator />
-                ) : (
-                    <AuthNavigator onBoardUser={onBoardUser} />
-                ))}
-        </NavigationContainer>
-    )
+  useEffect(() => {
+    initializeApp()
+  }, [initializeApp])
+
+  const theme = () => {
+    switch (scheme) {
+      case 'light':
+        return lightTheme
+      case 'dark':
+        return darkTheme
+      case 'nord':
+        return nordTheme
+      case 'nightly':
+        return nightlyTheme
+      default:
+        return lightTheme
+    }
+  }
+
+  return (
+    <NavigationContainer theme={theme()}>
+      {!asyncStoreLoading &&
+        (isLoggedIn ? (
+          <AppNavigator />
+        ) : (
+          <AuthNavigator onBoardUser={onBoardUser} />
+        ))}
+    </NavigationContainer>
+  )
 }

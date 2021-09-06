@@ -1,21 +1,16 @@
 {
-    "root": true,
-    "extends": ["airbnb", "@react-native-community", "prettier"],
-    "env": {"browser": true},
-    "rules": {
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [".js", ".jsx"]
-            }
-        ],
-        "global-require": "off",
-        "prettier/prettier": [
-            "error",
-            {
-                "endOfLine": "auto"
-            }
-        ]
-    },
-    "plugins": ["prettier"]
+  "root": true,
+  "extends": ["airbnb", "@react-native-community", "prettier"],
+  "env": {"browser": true},
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "global-require": "off",
+    "prettier/prettier": "error"
+  },
+  "plugins": ["prettier"]
 }

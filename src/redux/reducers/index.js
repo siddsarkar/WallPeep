@@ -7,10 +7,10 @@ import searchReducer from './searchReducer'
 import userReducer from './userReducer'
 
 export default combineReducers({
-    user: userReducer,
-    images: imagesReducer,
-    collections: collectionsReducer,
-    search: searchReducer,
-    rate: rateReducer,
-    error: errorReducer
+  user: userReducer,
+  images: imagesReducer,
+  collections: collectionsReducer,
+  search: searchReducer,
+  rate: rateReducer,
+  error: errorReducer,
 })

@@ -13,11 +13,11 @@ import RootNavigator from './router'
 import ThemeManager from './theme/themeProvider'
 
 export default function App() {
-    return (
-        <ThemeManager>
-            <Provider store={store}>
-                <RootNavigator />
-            </Provider>
-        </ThemeManager>
-    )
+  return (
+    <ThemeManager>
+      <Provider store={store}>
+        <RootNavigator />
+      </Provider>
+    </ThemeManager>
+  )
 }

@@ -10,24 +10,24 @@ import LoginPage from '../views/pages/LoginPage'
 const Stack = createStackNavigator()
 
 export default function AuthNavigator({onBoardUser}) {
-    return (
-        <Stack.Navigator mode='modal'>
-            <Stack.Screen
-                name='Login'
-                options={{headerShown: false}}
-                component={LoginPage}
-            />
+  return (
+    <Stack.Navigator mode='modal'>
+      <Stack.Screen
+        name='Login'
+        options={{headerShown: false}}
+        component={LoginPage}
+      />
 
-            <Stack.Screen
-                name='App Keys'
-                options={{
-                    headerShown: true,
-                    headerStyle: {
-                        shadowColor: 'transparent'
-                    }
-                }}
-                component={AppKeysPage}
-            />
-        </Stack.Navigator>
-    )
+      <Stack.Screen
+        name='App Keys'
+        options={{
+          headerShown: true,
+          headerStyle: {
+            shadowColor: 'transparent',
+          },
+        }}
+        component={AppKeysPage}
+      />
+    </Stack.Navigator>
+  )
 }
