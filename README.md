@@ -39,9 +39,10 @@ yarn install
 - On your newly create app page
   - On `Redirect URI & Permissions` check all the permissions (public,read,write,...,etc) and paste the uri from below on `Redirect URI` input
   ```
-  com.wallpeep.auth://calback
+  com.wallpeep.auth://callback
   ```
   - From `Keys` Section copy your access key and secret key
+  - After pasting your `access key` and `secret key` click on login with Unsplash and click continue
 
 ## Contributing
 
